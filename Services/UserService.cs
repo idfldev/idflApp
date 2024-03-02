@@ -19,10 +19,13 @@ namespace idflApp.Services
         }
         public AuthenticateResponseResult? Authenticate(AuthenticateRequestDto model)
         {
-            var user = _context.User.SingleOrDefault(x => x.Email == model.Email && x.Password == model.Password);
+            var user = _context.User.FirstOrDefault(x => x.Email == model.Email);
 
             // return null if user not found
             if (user == null) return null;
+            var decryptPassword = Utils.HashPasswordUtils.DecryptCode(user.Password);
+            if (decryptPassword == null) return null;
+            if (decryptPassword != model.Password) return null;
 
             // authentication successful so generate jwt token
             var token = _jwtUtils.GenerateJwtToken(user);
