@@ -1,4 +1,5 @@
 using idflApp.auth;
+using idflApp.Constants;
 using idflApp.Core.Dtos;
 using idflApp.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ namespace idflApp.Controllers.Common
         }
 
         [HttpGet]
+        [Authorize(Role.management)]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();

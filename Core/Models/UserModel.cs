@@ -10,9 +10,8 @@ namespace idflApp.Core.Models
         public string? Email { get; set; }
         public Role Roles { get; set; }
         public bool IsActive { get; set; }
-        public bool IsAdmin { get; set; }
         public bool IsVerified { get; set; }
         [JsonIgnore]
-        public required string Password { get; set; }
+        public string Password { get; set; }
     }
 }

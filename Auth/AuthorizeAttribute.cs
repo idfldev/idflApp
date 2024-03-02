@@ -22,11 +22,17 @@ namespace idflApp.auth
 
             // authorization
             var user = (UserModel?)context.HttpContext.Items["User"];
-            if (user == null || (_roles.Any() && !_roles.Contains(user.Roles)))
+            if (user == null)
             {
-                // not logged in or role not authorized
-                context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+                // User is not logged in
+                context.Result = new JsonResult(new { message = "Unauthorized - User not logged in" }) { StatusCode = StatusCodes.Status401Unauthorized };
             }
+            else if (_roles.Any() && !_roles.Contains(user.Roles))
+            {
+                // User is logged in but doesn't have the required role
+                context.Result = new JsonResult(new { message = "Unauthorized - Insufficient Role Access" }) { StatusCode = StatusCodes.Status401Unauthorized };
+            }
+
         }
     }
 }
