@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import ReactDOM from 'react-dom/client';
