@@ -4,4 +4,10 @@ namespace idflApp.Constants
     {
         management, staff
     }
+    public enum ClientRole
+    {
+        owner,
+        staff,
+        sub_client
+    }
 }

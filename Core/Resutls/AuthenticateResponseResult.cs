@@ -17,7 +17,7 @@ namespace idflApp.Core.Resutls
         public AuthenticateResponseResult(UserModel user, string token)
         {
             Id = user.Id;
-            Name = user.Name;
+            Name = user.AccountName;
             Email = user.Email;
             Roles =user.Roles;
             Token = token;
