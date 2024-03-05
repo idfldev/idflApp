@@ -14,6 +14,8 @@ namespace idflApp.Data
         public DbSet<ProjectGeneralModel> ProjectGeneral { get; set; }
         public DbSet<BookModel> Book { get; set; }
         public DbSet<ProjectStandardCategoryModel> ProjectStandardCategory { get; set; }
+        public DbSet<StandardQuestionModel> StandardQuestion { get; set; }
+        public DbSet<StandardAnswerModel> StandardAnswer{ get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

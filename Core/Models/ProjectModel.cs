@@ -10,11 +10,11 @@ namespace idflApp.Core.Models
         public StandardModel? StandardModel { get; set; }
         public Guid ClientId { get; set; }
         public List<ProjectStandardModel>? ProjectStandardModels { get; set; }
-        public Guid ProjectGeneralId { get; set; }
+        public Guid? ProjectGeneralId { get; set; }
         public ProjectGeneralModel? ProjectGeneralModel { get; set; }
         public ClientModel? ClientModel { get; set; }
-        public Guid PayerId { get; set; }
-        public Guid BookId { get; set; }
+        public Guid? PayerId { get; set; }
+        public Guid? BookId { get; set; }
         public BookModel? BookModel { get; set; }
         public bool IsInitialCertification { get; set; }
         public bool IsRenewalCertification { get; set; }
@@ -28,12 +28,12 @@ namespace idflApp.Core.Models
         public bool IsActive { get; set; }
         public bool IsConfirmed { get; set; }
         public bool IsCertificated { get; set; }
-        public string ConfirmedByUserId { get; set; }
+        public Guid? ConfirmedByUserId { get; set; }
         public DateTime? ConfirmedDateAt { get; set; }
         public DateTime? CertificatedDate { get; set; }
         public DateTime? ActiveDateAt { get; set; }
         public DateTime? DeletedDateAt { get; set; }
-
+        public List<StandardAnswerModel>? StandardAnswerModels { get; set; }
     }
 }
 

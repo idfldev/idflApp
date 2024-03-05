@@ -15,7 +15,8 @@ namespace idflApp.Data
             GenerateProjectStandardRelation(modelBuilder);
             GenerateBookingRelation(modelBuilder);
             GenerateStandardRelation(modelBuilder);
-
+            GenerateStandardAnswerRelation(modelBuilder);
+            GenerateStandardQuestionRelation(modelBuilder);
         }
         private static void GenerateUserRelation(ModelBuilder modelBuilder)
         {
@@ -89,6 +90,29 @@ namespace idflApp.Data
                 entity.HasOne(o => o.ProjectModel)
                 .WithOne(m => m.BookModel).HasForeignKey<BookModel>(f => f.ProjectId)
                 .HasConstraintName("fk_book_project");
+            });
+        }
+        private static void GenerateStandardAnswerRelation(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StandardAnswerModel>(entity =>
+            {
+                entity.ToTable("dbstandardanswer");
+                entity.HasOne(o => o.ProjectModel)
+                .WithMany(s => s.StandardAnswerModels)
+                .HasForeignKey(k => k.ProjectId)
+                .HasConstraintName("fk_standard_answer_project");
+                
+            });
+        }
+        private static void GenerateStandardQuestionRelation(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StandardQuestionModel>(entity =>
+            {
+                entity.ToTable("dbstandardquestion");
+                entity.HasOne(o=>o.StandardModel)
+                .WithMany(m=>m.StandardQuestionModels)
+                .HasForeignKey(k=>k.StandardId)
+                .HasConstraintName("fk_standard_question_standard");
             });
         }
 
