@@ -8,11 +8,12 @@ namespace idflApp.Core.Models
         public UserModel UserModel { get; set; }
         public Guid? ProjectId { get; set; }
         public ProjectModel? ProjectModel { get; set; }
-        public Guid? AuditById { get; set; }
-        public Guid? CompletedById { get; set; }
+        public Guid? AuditBy { get; set; }
+        public Guid? CompletedBy { get; set; }
         public string? Subject { get; set; }
-        public DateTime AuditDateAt { get; set; }
+        public DateTime AuditedAt { get; set; }
         public DateTime CompletedAt { get; set; }
-        public DateTime BookedAt { get; set; }
+        public DateTime StartedAt { get; set; }
+        public DateTime EndedAt { get; set; }
     }
 }

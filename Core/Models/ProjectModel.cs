@@ -8,14 +8,14 @@ namespace idflApp.Core.Models
     {
         public Guid StandardId { get; set; }
         public StandardModel? StandardModel { get; set; }
+        public Guid? BookId { get; set; }
+        public BookModel? BookModel { get; set; }
         public Guid ClientId { get; set; }
         public List<ProjectStandardModel>? ProjectStandardModels { get; set; }
         public Guid? ProjectGeneralId { get; set; }
         public ProjectGeneralModel? ProjectGeneralModel { get; set; }
         public ClientModel? ClientModel { get; set; }
         public Guid? PayerId { get; set; }
-        public Guid? BookId { get; set; }
-        public BookModel? BookModel { get; set; }
         public bool IsInitialCertification { get; set; }
         public bool IsRenewalCertification { get; set; }
         public bool IsAnotherCertification { get; set; }

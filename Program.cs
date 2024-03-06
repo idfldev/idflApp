@@ -5,14 +5,17 @@ using idflApp.Data;
 using idflApp.Middlewares;
 using idflApp.Repository;
 using idflApp.Services;
+using idflApp.Services.management.booking;
+using idflApp.Services.management.booking.interfaces;
 using idflApp.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllersWithViews();
 builder.Services.AddCors();
 builder.Services.AddControllers()
@@ -23,8 +26,10 @@ builder.Services.AddControllers()
 // configure databsae
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-);
+{
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppJwtSettings"));
 builder.Services.AddAntiforgery(options =>
 {
@@ -32,6 +37,7 @@ builder.Services.AddAntiforgery(options =>
 });
 builder.Services.AddScoped<IJwtUtilRepository, JwtUtils>();
 builder.Services.AddScoped<IUserRepository, UserService>();
+builder.Services.AddScoped<IBookRepository, BookService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

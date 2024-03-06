@@ -9,7 +9,7 @@ namespace idflApp.Data
         public DbSet<UserModel> User { get; set; }
         public DbSet<ClientModel> Client { get; set; }
         public DbSet<StandardModel> Standard { get; set; }
-        public DbSet<ProjectModel> ProjectModel { get; set; }
+        public DbSet<ProjectModel> Project { get; set; }
         public DbSet<ProjectStandardModel> ProjectStandard { get; set; }
         public DbSet<ProjectGeneralModel> ProjectGeneral { get; set; }
         public DbSet<BookModel> Book { get; set; }
