@@ -159,57 +159,6 @@ namespace idflApp.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "dbproject",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    StandardId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    BookId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    ClientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ProjectGeneralId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    PayerId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    IsInitialCertification = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsRenewalCertification = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsAnotherCertification = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsRequired = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    LicenseNo = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    CertificationBody = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    CertificationExpirationDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Status = table.Column<byte>(type: "tinyint unsigned", nullable: false),
-                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsConfirmed = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsCertificated = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ConfirmedByUserId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    ConfirmedDateAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CertificatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    ActiveDateAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    DeletedDateAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_dbproject", x => x.Id);
-                    table.ForeignKey(
-                        name: "fk_project_client",
-                        column: x => x.ClientId,
-                        principalTable: "dbclient",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_project_standard",
-                        column: x => x.StandardId,
-                        principalTable: "dbstandard",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "dbstandardquestion",
                 columns: table => new
                 {
@@ -231,6 +180,59 @@ namespace idflApp.Migrations
                         name: "fk_standard_question_standard",
                         column: x => x.StandardId,
                         principalTable: "dbstandard",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "dbproject",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    StandardId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    IdflCode = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    BookId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ClientId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ProjectGeneralId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    PayerId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IsInitialCertification = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsRenewalCertification = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsAnotherCertification = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    LicenseNo = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CertificationBody = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CertificationExpirationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Status = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    HandledBy = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    IssueCertificated = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IssueCertificatedDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_dbproject", x => x.Id);
+                    table.ForeignKey(
+                        name: "fk_project_client",
+                        column: x => x.ClientId,
+                        principalTable: "dbclient",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_project_standard",
+                        column: x => x.StandardId,
+                        principalTable: "dbstandard",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_project_user",
+                        column: x => x.HandledBy,
+                        principalTable: "dbuser",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -366,8 +368,8 @@ namespace idflApp.Migrations
                 columns: new[] { "Id", "AccountName", "AccountNumber", "AccountRole", "ActiveAt", "Address", "BusinessLicenseFile", "City", "CompanyName", "ContactPerson", "CreatedAt", "DeletedAt", "District", "Dob", "Email", "FaxNumber", "IDCardNumber", "IsActive", "IsDeleted", "IsThirdParty", "IsVerified", "Password", "Phone", "Representator", "RepresentatorTitle", "TaxNumber", "UpdatedAt", "VerifiedAt", "Ward", "Website" },
                 values: new object[,]
                 {
-                    { new Guid("d1219868-b3cc-4218-8502-db40e6fb6a70"), "client 2", 123587, 0, new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6311), "TPHCM", "/uploads/docs/122BC4DD.pdf", null, "CTy TNHH MTV SCB", "0982288888", new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6310), null, "10", null, "client_2@gmail.com", "10099922", "1235888570", true, false, true, true, "m9fUsQskgQAZZPVNkXc3ag==", "0983373388", "Client example", "Director Manager", "12358799", null, new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6312), "5", "scc.com" },
-                    { new Guid("d5a30990-25c0-463c-abb5-01607f2a2793"), "client 1", 128743, 0, new DateTime(2024, 3, 5, 22, 13, 46, 138, DateTimeKind.Local).AddTicks(9325), "TPHCM", "/uploads/docs/122BC4DD.pdf", null, "CTy TNHH MTV SCC", "0982288888", new DateTime(2024, 3, 5, 22, 13, 46, 138, DateTimeKind.Local).AddTicks(9321), null, "10", null, "client_1@gmail.com", "10099922", "1235888570", true, false, false, true, "m9fUsQskgQAZZPVNkXc3ag==", "0983373388", "Client example", "Director Manager", "12358799", null, new DateTime(2024, 3, 5, 22, 13, 46, 138, DateTimeKind.Local).AddTicks(9326), "5", "scc.com" }
+                    { new Guid("47896a19-b739-4466-8c04-a15c421ff780"), "client 1", 128743, 0, new DateTime(2024, 3, 6, 13, 35, 34, 740, DateTimeKind.Local).AddTicks(2708), "TPHCM", "/uploads/docs/122BC4DD.pdf", null, "CTy TNHH MTV SCC", "0982288888", new DateTime(2024, 3, 6, 13, 35, 34, 740, DateTimeKind.Local).AddTicks(2706), null, "10", null, "client_1@gmail.com", "10099922", "1235888570", true, false, false, true, "m9fUsQskgQAZZPVNkXc3ag==", "0983373388", "Client example", "Director Manager", "12358799", null, new DateTime(2024, 3, 6, 13, 35, 34, 740, DateTimeKind.Local).AddTicks(2709), "5", "scc.com" },
+                    { new Guid("f5e77044-f8bc-4031-b3b4-ed121afe1ff8"), "client 2", 123587, 0, new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(418), "TPHCM", "/uploads/docs/122BC4DD.pdf", null, "CTy TNHH MTV SCB", "0982288888", new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(414), null, "10", null, "client_2@gmail.com", "10099922", "1235888570", true, false, true, true, "m9fUsQskgQAZZPVNkXc3ag==", "0983373388", "Client example", "Director Manager", "12358799", null, new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(419), "5", "scc.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -375,15 +377,15 @@ namespace idflApp.Migrations
                 columns: new[] { "Id", "CreatedAt", "DeletedAt", "Description", "IsActive", "IsDeleted", "Name", "StandardCode", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("5c45b44d-c7ac-41a5-9a90-645aa8a08b8b"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6460), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Tiêu Chuẩn Mohair Có Trách Nhiệm", "RMS", null },
-                    { new Guid("72fbd03c-c19a-4a9d-b1a1-1aaf879429c1"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6453), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Recycled Claim Standard", "RCS", null },
-                    { new Guid("b92141b9-3dd1-407f-b3f5-ba5ada8b9711"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6446), null, "IDFL may not issue a GOTS scope certificate to an organization which holds a OCS scope certificate with another certification body, unless the GOTS scope certificate is in the process of being transferred to IDFL.", true, false, "Global Organic Textile Standard", "GOTS", null },
-                    { new Guid("ca3131ca-74cf-46e1-9154-9be46ca59655"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6455), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Responsible Down Standard", "RDS", null },
-                    { new Guid("cfc7a533-ab36-43cc-905b-bcba3f1bfb06"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6458), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Tiêu Chuẩn Len Có Trách Nhiệm", "RWS", null },
-                    { new Guid("d000f655-9e10-4786-b722-c3013a99484b"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6456), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Responsible Animal Fiber", "RAF", null },
-                    { new Guid("dbb9dd05-8f9a-4df1-bb73-492e2b8cd68b"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6451), null, "IDFL may not issue a GRS scope certificate to an organization which holds a RCS scope certificate with another certification body, unless the RCS scope certificate is in the process of being transferred to IDFL.", true, false, "Global Recycled Standard", "GRS", null },
-                    { new Guid("f4ec2065-42b1-49ac-939b-67390be744f5"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6461), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Tiêu Chuẩn Alpaca Có Trách Nhiệm", "RAS", null },
-                    { new Guid("f83ea1d1-6027-4154-9d5b-86cf1f8762d9"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6444), null, "IDFL may not issue an OCS scope certificate to an organization which holds a GOTS scope certificate with another certification body, unless the GOTS scope certificate is in the process of being transferred to IDFL.", true, false, "Organic Content Standard", "OCS", null }
+                    { new Guid("2ccf6ef9-e06f-484c-a51c-fd9e67975118"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(533), null, "IDFL may not issue a GOTS scope certificate to an organization which holds a OCS scope certificate with another certification body, unless the GOTS scope certificate is in the process of being transferred to IDFL.", true, false, "Global Organic Textile Standard", "GOTS", null },
+                    { new Guid("628501b9-2821-4469-8f48-c527421d8e20"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(548), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Tiêu Chuẩn Alpaca Có Trách Nhiệm", "RAS", null },
+                    { new Guid("9345e936-9d53-4793-bf3d-d0c7a36f7fc3"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(546), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Tiêu Chuẩn Mohair Có Trách Nhiệm", "RMS", null },
+                    { new Guid("96370b7b-ecfb-40f2-b4bd-db86a87dee17"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(535), null, "IDFL may not issue a GRS scope certificate to an organization which holds a RCS scope certificate with another certification body, unless the RCS scope certificate is in the process of being transferred to IDFL.", true, false, "Global Recycled Standard", "GRS", null },
+                    { new Guid("ae2f32cc-fad4-42df-87a8-656fe9bef995"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(530), null, "IDFL may not issue an OCS scope certificate to an organization which holds a GOTS scope certificate with another certification body, unless the GOTS scope certificate is in the process of being transferred to IDFL.", true, false, "Organic Content Standard", "OCS", null },
+                    { new Guid("b44382e1-d93e-4cd8-afe7-6d26adfeb392"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(542), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Tiêu Chuẩn Len Có Trách Nhiệm", "RWS", null },
+                    { new Guid("d0294ed1-5534-4e1a-8090-bf5dfb7dedcf"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(540), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Responsible Animal Fiber", "RAF", null },
+                    { new Guid("eabb4ac6-3c38-4d7b-a618-da739f109d1e"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(537), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Recycled Claim Standard", "RCS", null },
+                    { new Guid("ed944e61-dbca-43b9-bba2-b1a9298f2505"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(539), null, "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.", true, false, "Responsible Down Standard", "RDS", null }
                 });
 
             migrationBuilder.InsertData(
@@ -391,23 +393,28 @@ namespace idflApp.Migrations
                 columns: new[] { "Id", "AccountName", "ActiveDateAt", "Address", "City", "CreatedAt", "DeletedAt", "DeletedDateAt", "District", "Dob", "Email", "IsActive", "IsDeleted", "IsVerified", "Password", "Phone", "Roles", "UpdatedAt", "VerifiedDateAt", "Ward" },
                 values: new object[,]
                 {
-                    { new Guid("512c5fb5-8ed6-4a8c-acbd-2cf9ea672e22"), "Test 1", new DateTime(2024, 3, 5, 22, 13, 46, 138, DateTimeKind.Local).AddTicks(1674), null, null, new DateTime(2024, 3, 5, 22, 13, 46, 138, DateTimeKind.Local).AddTicks(1672), null, null, null, null, "test_2@gmail.com", true, false, true, "m9fUsQskgQAZZPVNkXc3ag==", "123587777", 1, null, new DateTime(2024, 3, 5, 22, 13, 46, 138, DateTimeKind.Local).AddTicks(1674), null },
-                    { new Guid("c3fa981c-d5ad-4f87-8731-a643c690f2e9"), "Test 1", new DateTime(2024, 3, 5, 22, 13, 46, 137, DateTimeKind.Local).AddTicks(4608), null, null, new DateTime(2024, 3, 5, 22, 13, 46, 137, DateTimeKind.Local).AddTicks(4596), null, null, null, null, "test_1@gmail.com", true, false, true, "m9fUsQskgQAZZPVNkXc3ag==", "123587777", 0, null, new DateTime(2024, 3, 5, 22, 13, 46, 137, DateTimeKind.Local).AddTicks(4611), null }
+                    { new Guid("9757b502-b82c-4558-8cd2-66e86c41f63b"), "Test 1", new DateTime(2024, 3, 6, 13, 35, 34, 738, DateTimeKind.Local).AddTicks(8267), null, null, new DateTime(2024, 3, 6, 13, 35, 34, 738, DateTimeKind.Local).AddTicks(8254), null, null, null, null, "test_1@gmail.com", true, false, true, "m9fUsQskgQAZZPVNkXc3ag==", "123587777", 0, null, new DateTime(2024, 3, 6, 13, 35, 34, 738, DateTimeKind.Local).AddTicks(8270), null },
+                    { new Guid("9a455c0a-f149-43ac-81a8-2f71975b4c7d"), "Test 1", new DateTime(2024, 3, 6, 13, 35, 34, 739, DateTimeKind.Local).AddTicks(5459), null, null, new DateTime(2024, 3, 6, 13, 35, 34, 739, DateTimeKind.Local).AddTicks(5457), null, null, null, null, "test_2@gmail.com", true, false, true, "m9fUsQskgQAZZPVNkXc3ag==", "123587777", 1, null, new DateTime(2024, 3, 6, 13, 35, 34, 739, DateTimeKind.Local).AddTicks(5460), null }
                 });
 
             migrationBuilder.InsertData(
                 table: "dbproject",
-                columns: new[] { "Id", "ActiveDateAt", "BookId", "CertificatedDate", "CertificationBody", "CertificationExpirationDate", "ClientId", "ConfirmedByUserId", "ConfirmedDateAt", "CreatedAt", "DeletedAt", "DeletedDateAt", "IsActive", "IsAnotherCertification", "IsCertificated", "IsConfirmed", "IsDeleted", "IsInitialCertification", "IsRenewalCertification", "IsRequired", "LicenseNo", "PayerId", "ProjectGeneralId", "StandardId", "Status", "UpdatedAt" },
-                values: new object[] { new Guid("51ee6ad3-211f-4d98-b77f-14a398753d8f"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6577), null, new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6577), "Test", new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6574), new Guid("d5a30990-25c0-463c-abb5-01607f2a2793"), new Guid("c3fa981c-d5ad-4f87-8731-a643c690f2e9"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6576), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6578), null, null, true, true, true, true, false, true, true, true, "12233XYUC", null, null, new Guid("f83ea1d1-6027-4154-9d5b-86cf1f8762d9"), (byte)1, null });
+                columns: new[] { "Id", "BookId", "CertificationBody", "CertificationExpirationDate", "ClientId", "CreatedAt", "DeletedAt", "HandledBy", "IdflCode", "IsAnotherCertification", "IsDeleted", "IsInitialCertification", "IsRenewalCertification", "IssueCertificated", "IssueCertificatedDate", "LicenseNo", "PayerId", "ProjectGeneralId", "StandardId", "Status", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { new Guid("26db5f41-d572-4193-bdb7-56ec5c2487a3"), null, "project_3", new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(624), new Guid("47896a19-b739-4466-8c04-a15c421ff780"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(625), null, null, "223TTT009", true, false, true, false, true, new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(625), "12233XYUC", null, null, new Guid("ae2f32cc-fad4-42df-87a8-656fe9bef995"), "Completed", null },
+                    { new Guid("56163402-81f5-4730-82c7-57cc0835c394"), null, "Test", new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(601), new Guid("47896a19-b739-4466-8c04-a15c421ff780"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(617), null, null, "223787XC", true, false, true, true, true, new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(617), "12233XYUC", null, null, new Guid("ae2f32cc-fad4-42df-87a8-656fe9bef995"), "Pending", null },
+                    { new Guid("f9e391ad-b392-4e54-8ae7-8af430f68cba"), null, "Test", new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(620), new Guid("47896a19-b739-4466-8c04-a15c421ff780"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(622), null, null, "223487XC", true, false, true, false, false, new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(621), "12233XYUC", null, null, new Guid("ae2f32cc-fad4-42df-87a8-656fe9bef995"), "Verified", null }
+                });
 
             migrationBuilder.InsertData(
                 table: "dbstandardquestion",
                 columns: new[] { "Id", "CreatedAt", "DeletedAt", "Description", "IsActive", "Question", "StandardId", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("81c29864-427a-4203-b999-b2923ff93def"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6492), null, null, true, "OEKO-TEX STEP Environmental Performance Requirements | Yêu cầu về Hiệu suất Môi trường của Oeko - Tex Step", new Guid("f83ea1d1-6027-4154-9d5b-86cf1f8762d9"), null },
-                    { new Guid("f1322962-8a70-4e9a-85c1-276b82e0043a"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6494), null, null, true, "SCS Recycled Content Verification | Xác Minh Thành Phần Tái Chế SCS", new Guid("f83ea1d1-6027-4154-9d5b-86cf1f8762d9"), null },
-                    { new Guid("fe0c98f8-8a04-4dae-b874-c01cab6d84df"), new DateTime(2024, 3, 5, 22, 13, 46, 139, DateTimeKind.Local).AddTicks(6488), null, null, true, "Are there any subcontractor facilities that trade / handle / process certified products in this scope of certification? If so, please indicate by noting in the List of Activities / Processes", new Guid("f83ea1d1-6027-4154-9d5b-86cf1f8762d9"), null }
+                    { new Guid("6a46c609-ee0d-4960-96b3-0ccaeb111b65"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(574), null, null, true, "Are there any subcontractor facilities that trade / handle / process certified products in this scope of certification? If so, please indicate by noting in the List of Activities / Processes", new Guid("ae2f32cc-fad4-42df-87a8-656fe9bef995"), null },
+                    { new Guid("899f415b-6db2-407d-bedf-025ade556ca5"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(579), null, null, true, "SCS Recycled Content Verification | Xác Minh Thành Phần Tái Chế SCS", new Guid("ae2f32cc-fad4-42df-87a8-656fe9bef995"), null },
+                    { new Guid("fb43f8ef-850c-4c79-94bf-515426377a4d"), new DateTime(2024, 3, 6, 13, 35, 34, 741, DateTimeKind.Local).AddTicks(577), null, null, true, "OEKO-TEX STEP Environmental Performance Requirements | Yêu cầu về Hiệu suất Môi trường của Oeko - Tex Step", new Guid("ae2f32cc-fad4-42df-87a8-656fe9bef995"), null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -425,6 +432,17 @@ namespace idflApp.Migrations
                 name: "IX_dbproject_ClientId",
                 table: "dbproject",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_dbproject_HandledBy",
+                table: "dbproject",
+                column: "HandledBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_dbproject_IdflCode",
+                table: "dbproject",
+                column: "IdflCode",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_dbproject_StandardId",
@@ -477,9 +495,6 @@ namespace idflApp.Migrations
                 name: "dbstandardquestion");
 
             migrationBuilder.DropTable(
-                name: "dbuser");
-
-            migrationBuilder.DropTable(
                 name: "ProjectStandardCategory");
 
             migrationBuilder.DropTable(
@@ -490,6 +505,9 @@ namespace idflApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "dbstandard");
+
+            migrationBuilder.DropTable(
+                name: "dbuser");
         }
     }
 }

@@ -2,15 +2,15 @@ import React from "react";
 import { Container } from "reactstrap";
 import { NavbarManagement } from "./Navbar/navbar-management";
 interface LayoutManagementProps {
-    children?: React.ReactNode;
+  children?: React.ReactNode;
 }
-export const LayoutManagement: React.FC<LayoutManagementProps> = (props) =>{
-    return (
-        <div>
-            <NavbarManagement/>
-            <Container tag="main">
-            {props.children !== undefined && props.children}
-            </Container>
-        </div>
-    )
-}
+export const LayoutManagement: React.FC<LayoutManagementProps> = (props) => {
+  return (
+    <div className="flex">
+      <NavbarManagement />
+      <Container className="border">
+        {props.children !== undefined && props.children}
+      </Container>
+    </div>
+  );
+};

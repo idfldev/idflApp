@@ -1,5 +1,6 @@
 ﻿using System;
 using Core.Models;
+using idflApp.Constants;
 using idflApp.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -226,45 +227,54 @@ namespace idflApp.Data
             var project_1 = new ProjectModel
             {
                 Id = Guid.NewGuid(),
+                IdflCode = "223787XC",
                 StandardId = ocs.Id,
                 ClientId = client_1.Id,
                 IsAnotherCertification = true,
                 IsRenewalCertification = true,
                 IsInitialCertification = true,
-                IsRequired = true,
                 LicenseNo = "12233XYUC",
                 CertificationBody = "Test",
                 CertificationExpirationDate = DateTime.Now,
-                Status = 1,
-                IsActive = true,
-                IsCertificated = true,
-                IsConfirmed = true,
-                ConfirmedByUserId = account_1.Id,
-                ConfirmedDateAt = DateTime.Now,
-                CertificatedDate = DateTime.Now,
-                ActiveDateAt = DateTime.Now,
+                Status = ProjectConstant.ProjectStatus.Pending.ToString(),
+                IssueCertificated = true,
+                IssueCertificatedDate = DateTime.Now,
                 CreatedAt = DateTime.Now
 
             };
             var project_2 = new ProjectModel
             {
                 Id = Guid.NewGuid(),
-                StandardId = gots.Id,
-                ClientId = client_2.Id,
+                IdflCode = "223487XC",
+                StandardId = ocs.Id,
+                ClientId = client_1.Id,
                 IsAnotherCertification = true,
                 IsRenewalCertification = false,
                 IsInitialCertification = true,
-                IsRequired = true,
                 LicenseNo = "12233XYUC",
                 CertificationBody = "Test",
                 CertificationExpirationDate = DateTime.Now,
-                Status = 1,
-                IsActive = true,
-                IsCertificated = true,
-                IsConfirmed = false,
-                ConfirmedByUserId = account_1.Id,
-                ConfirmedDateAt = DateTime.Now,
-                CertificatedDate = DateTime.Now,
+                Status = ProjectConstant.ProjectStatus.Verified.ToString(),
+                IssueCertificated = false,
+                IssueCertificatedDate = DateTime.Now,
+                CreatedAt = DateTime.Now
+
+            };
+            var project_3 = new ProjectModel
+            {
+                Id = Guid.NewGuid(),
+                IdflCode = "223TTT009",
+                StandardId = ocs.Id,
+                ClientId = client_1.Id,
+                IsAnotherCertification = true,
+                IsRenewalCertification = false,
+                IsInitialCertification = true,
+                LicenseNo = "12233XYUC",
+                CertificationBody = "project_3",
+                CertificationExpirationDate = DateTime.Now,
+                Status = ProjectConstant.ProjectStatus.Completed.ToString(),
+                IssueCertificated = true,
+                IssueCertificatedDate = DateTime.Now,
                 CreatedAt = DateTime.Now
 
             };
@@ -272,7 +282,7 @@ namespace idflApp.Data
             .Entity<ProjectModel>()
             .HasData(new List<ProjectModel>
             {
-                project_1, project_2
+                project_1, project_2,project_3
             });
         }
     }
