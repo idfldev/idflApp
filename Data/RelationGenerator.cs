@@ -88,8 +88,11 @@ namespace idflApp.Data
             {
                 entity.ToTable("dbbooking");
                 entity.HasOne(o => o.ProjectModel)
-                .WithOne(m => m.BookModel).HasForeignKey<BookModel>(f => f.ProjectId)
-                .HasConstraintName("fk_book_project");
+                .WithOne(o=>o.BookModel)
+                .HasForeignKey<BookModel>(k=>k.ProjectId);
+                entity.HasOne(o=>o.UserModel)
+                .WithMany(s=>s.BookModels)
+                .HasForeignKey(f => f.UserId).OnDelete(DeleteBehavior.Cascade);  
             });
         }
         private static void GenerateStandardAnswerRelation(ModelBuilder modelBuilder)

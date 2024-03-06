@@ -246,11 +246,33 @@ namespace idflApp.Data
                 CreatedAt = DateTime.Now
 
             };
+            var project_2 = new ProjectModel
+            {
+                Id = Guid.NewGuid(),
+                StandardId = gots.Id,
+                ClientId = client_2.Id,
+                IsAnotherCertification = true,
+                IsRenewalCertification = false,
+                IsInitialCertification = true,
+                IsRequired = true,
+                LicenseNo = "12233XYUC",
+                CertificationBody = "Test",
+                CertificationExpirationDate = DateTime.Now,
+                Status = 1,
+                IsActive = true,
+                IsCertificated = true,
+                IsConfirmed = false,
+                ConfirmedByUserId = account_1.Id,
+                ConfirmedDateAt = DateTime.Now,
+                CertificatedDate = DateTime.Now,
+                CreatedAt = DateTime.Now
+
+            };
             modelBuilder
             .Entity<ProjectModel>()
             .HasData(new List<ProjectModel>
             {
-                project_1
+                project_1, project_2
             });
         }
     }
