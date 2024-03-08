@@ -7,14 +7,14 @@ import { LayoutManagement } from "../../layout-management";
 import React from "react";
 import "./book-create-form.css";
 import { useNavigate } from "react-router";
-interface BookCreateInterface {
-  projectId: any;
-}
+import { useParams } from "react-router-dom";
+
 interface AuditorInferface {
   id: any;
   name: any;
 }
-export const BookCreateForm: React.FC<BookCreateInterface> = (props) => {
+export const BookCreateForm: React.FC = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [errorAlert, setErrorAlert] = useState("");
   const [client, setClient] = useState("");
@@ -39,7 +39,7 @@ export const BookCreateForm: React.FC<BookCreateInterface> = (props) => {
   const getDataFromBook = async () => {
     try {
       const response = await axios.get(
-        `api/management/book/${props.projectId}`,
+        `api/management/book/${id}`,
         {
           headers: {
             Authorization: token,
@@ -101,7 +101,7 @@ export const BookCreateForm: React.FC<BookCreateInterface> = (props) => {
       return;
     }
     const formData = {
-      projectId: props.projectId,
+      projectId: id,
       AuditBy: selected?.id,
       Purpose: purpose,
       StartedAt: startDate.startDate,
@@ -133,7 +133,7 @@ export const BookCreateForm: React.FC<BookCreateInterface> = (props) => {
   }, [errorAlert]);
   return (
     <>
-      <LayoutManagement>
+  
         <form onSubmit={handleSubmit} className="p-3">
           <div className="space-y-0 p-5 m-auto relative w-4/6">
             <div className="pb-0">
@@ -315,7 +315,7 @@ export const BookCreateForm: React.FC<BookCreateInterface> = (props) => {
             </div>
           </div>
         </form>
-      </LayoutManagement>
+
     </>
   );
 };

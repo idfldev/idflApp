@@ -32,7 +32,7 @@ export const ProjectApp: React.FC = () => {
           <span className="loader"></span>
         </div>
       )}
-      <LayoutManagement>
+      <>
         <h1 className="uppercase pb-8 pt-20 px-4">Projects Information</h1>
         <div className="relative  border overflow-x-auto w-full h-4/5">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-60">
@@ -182,7 +182,7 @@ export const ProjectApp: React.FC = () => {
                                         "block px-4 py-2 text-sm"
                                       )}
                                       tag={Link}
-                                      to={`/management-dashboard/book-create/${items.id}`}
+                                      to={`project/book-create/${items.id}`}
                                     >
                                       Book
                                     </NavLink>
@@ -251,7 +251,7 @@ export const ProjectApp: React.FC = () => {
             </tbody>
           </table>
         </div>
-      </LayoutManagement>
+      </>
     </>
   );
 };

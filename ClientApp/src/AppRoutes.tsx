@@ -1,18 +1,18 @@
-import { LoginApp } from "components/Pages/Management/Login/login";
 import { ProjectApp } from "components/Pages/Management/Project-components/Project";
+import BookCreateForm from "components/Pages/Management/Project-components/Project/book-create-form";
 import { ProjectDetail } from "components/Pages/Management/Project-components/Project/project-detail";
 
 const AppRoutes = [
   {
-    index: true,
-    element: <LoginApp />,
-  },
-  {
-    path: "/management-dashboard",
+    path: "/",
     element: <ProjectApp />,
   },
   {
-    path: "/management-dashboard/project-detail",
+    path: "project/book-create/:id",
+    element: <BookCreateForm />,
+  },
+  {
+    path: "project/project-detail",
     element: <ProjectDetail />,
   },
 ];
