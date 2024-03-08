@@ -14,6 +14,7 @@ namespace idflApp.Core.Dtos
         public string? Standard { get; set; }
         public Guid? BookId { get; set; }
         public string? Client { get; set; }
+        public bool Book { get; set; }
         public bool IsInitialCertification { get; set; }
         public bool IsRenewalCertification { get; set; }
         public bool IsAnotherCertification { get; set; }

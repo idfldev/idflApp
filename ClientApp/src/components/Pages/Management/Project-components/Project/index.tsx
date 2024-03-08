@@ -1,30 +1,23 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { LayoutManagement } from "../layout-management";
+import { LayoutManagement } from "../../layout-management";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { NavItem, NavLink } from "reactstrap";
-import { BookModal } from "./Book/book-modal";
+import { Link } from "react-router-dom";
+import "./index.css";
 export const ProjectApp: React.FC = () => {
-  const [open, setOpen] = useState(false)
-  const [projectId, setProjectId] = useState("");
-  const [client, setClient] = useState("");
-  const [standard, setStandard] = useState("");
+  const [loading, setLoading] = useState<boolean>(true);
   const [project, setProject] = useState([]);
-  const [users, setUsers] = useState([]);
-  const openModal = (projectId:any, standard:any, client:any, users: any) =>{
-    setOpen(true);
-    setProjectId(projectId);
-    setStandard(standard);
-    setClient(client)
-    setUsers(users)
-  }
+
   const getProjectData = async () => {
     try {
       const response = await axios.get("api/management/project");
       setProject(response.data);
-      console.log(response.data);
-    } catch (error) {}
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     getProjectData();
@@ -34,9 +27,14 @@ export const ProjectApp: React.FC = () => {
   }
   return (
     <>
+      {loading && (
+        <div className="bg-neutral-600 bg-opacity-50 fixed w-full h-full z-10">
+          <span className="loader"></span>
+        </div>
+      )}
       <LayoutManagement>
         <h1 className="uppercase pb-8 pt-20 px-4">Projects Information</h1>
-        <div className="border overflow-x-auto w-full h-4/5">
+        <div className="relative  border overflow-x-auto w-full h-4/5">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-60">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50  dark:text-gray-400">
               <tr className="w-full">
@@ -60,9 +58,11 @@ export const ProjectApp: React.FC = () => {
                 <th scope="col" className="pe-20 py-3">
                   Expired Certificated
                 </th>
-
                 <th scope="col" className="pe-20 py-3">
                   status
+                </th>
+                <th scope="col" className="pe-20 py-3">
+                  Booked
                 </th>
                 <th scope="col" className="pe-10 py-3">
                   Issued Certification
@@ -83,7 +83,10 @@ export const ProjectApp: React.FC = () => {
             </thead>
             <tbody>
               {project.map((items: any, index: any) => (
-                <tr key={index} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                <tr
+                  key={index}
+                  className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                >
                   <td className="px-10 py-3 text-center">{index}</td>
                   <td className="py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {items.client}
@@ -93,7 +96,24 @@ export const ProjectApp: React.FC = () => {
                   <td className="py-3">{items.licenseNo}</td>
                   <td className="py-3">{items.issueCertificatedDate}</td>
                   <td className="py-3">{items.certificationExpirationDate}</td>
-                  <td className="py-3">{items.status}</td>
+                  <td
+                    className={`py-3 ${
+                      items.status === "Pending"
+                        ? "text-red-500 font-bold"
+                        : "" || items.status === "Verified"
+                        ? "text-green-500 font-bold"
+                        : ""
+                    }`}
+                  >
+                    {items.status}
+                  </td>
+                  <td className="py-3 text-lime-500 font-bold">
+                    <input
+                      readOnly
+                      type="checkbox"
+                      checked={items.book === true ? true : false}
+                    />
+                  </td>
                   <td className="py-3">
                     <input
                       readOnly
@@ -130,7 +150,7 @@ export const ProjectApp: React.FC = () => {
                     />
                   </td>
                   <td>
-                    <Menu  as="div" className="relative inline-block text-left">
+                    <Menu as="div" className="relative inline-block text-left">
                       <div>
                         <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-mdpx-3 py-2 text-sm font-semibold text-gray-900">
                           <EllipsisHorizontalIcon className="h-6 w-6 text-blue-500" />
@@ -151,20 +171,26 @@ export const ProjectApp: React.FC = () => {
                             <Menu.Item>
                               {({ active }) => (
                                 <NavItem>
-                                  <NavLink
-                                    className={classNames(
-                                      active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-2 text-sm"
-                                    )}
-                                    onClick={()=> openModal(items.id, items.standard, items.client, items.users)}
-                                  >
-                                    Book                                
-                                  </NavLink>
+                                  {items.book === true ? (
+                                    ""
+                                  ) : (
+                                    <NavLink
+                                      className={classNames(
+                                        active
+                                          ? "bg-gray-100 text-gray-900"
+                                          : "text-gray-700",
+                                        "block px-4 py-2 text-sm"
+                                      )}
+                                      tag={Link}
+                                      to={`/management-dashboard/book-create/${items.id}`}
+                                    >
+                                      Book
+                                    </NavLink>
+                                  )}
                                 </NavItem>
                               )}
                             </Menu.Item>
+
                             <Menu.Item>
                               {({ active }) => (
                                 <NavItem>
@@ -175,22 +201,8 @@ export const ProjectApp: React.FC = () => {
                                         : "text-gray-700",
                                       "block px-4 py-2 text-sm"
                                     )}
-                                  >
-                                    View
-                                  </NavLink>
-                                </NavItem>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <NavItem>
-                                  <NavLink
-                                    className={classNames(
-                                      active
-                                        ? "bg-gray-100 text-gray-900"
-                                        : "text-gray-700",
-                                      "block px-4 py-2 text-sm"
-                                    )}
+                                    tag={Link}
+                                    to="/management-dashboard/project-detail"
                                   >
                                     Edit
                                   </NavLink>
@@ -208,7 +220,7 @@ export const ProjectApp: React.FC = () => {
                                       "block px-4 py-2 text-sm"
                                     )}
                                   >
-                                    Cancel book
+                                    Cancel
                                   </NavLink>
                                 </NavItem>
                               )}
@@ -238,7 +250,6 @@ export const ProjectApp: React.FC = () => {
               ))}
             </tbody>
           </table>
-          <BookModal  open={open} setOpen={setOpen} projectId={projectId} standard={standard} client={client} users={users}/>
         </div>
       </LayoutManagement>
     </>

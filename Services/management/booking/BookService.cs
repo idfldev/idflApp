@@ -20,11 +20,13 @@ namespace idflApp.Services.management.booking
         }
         public bool CheckExistBookDate(DateTime startedDate, DateTime endedDate, Guid auditId)
         {
+            var startedAt = startedDate.Date;
+            var endedAt = endedDate.Date;
             // Check if any book with the specified auditId exists within the date range
             var books = _context.Book.Where(s => s.AuditBy == auditId).ToList();
             foreach (var book in books)
             {
-                if (book.StartedAt.Date >= startedDate.Date && book.EndedAt.Date <= endedDate.Date)
+                if (book.StartedAt.Date >= startedAt && book.EndedAt.Date <= endedDate.Date)
                 {
                     // If any book falls within the date range, return true
                     return true;
@@ -40,12 +42,12 @@ namespace idflApp.Services.management.booking
             try
             {
                 // if project booked, can not book more
-                if (_context.Book.Any(s=>s.ProjectId.Equals(ob.ProjectId)))
+                if (_context.Book.Any(s => s.ProjectId.Equals(ob.ProjectId)))
                 {
                     return new CreateBooKDto
                     {
                         Result = false,
-                        Messages = ResponseErrorConstant.BookTimeError,
+                        Message = ResponseErrorConstant.ExistBookDate,
                         Data = ob
                     };
                 }
@@ -55,7 +57,7 @@ namespace idflApp.Services.management.booking
                     return new CreateBooKDto
                     {
                         Result = false,
-                        Messages = ResponseErrorConstant.ExistBookDate,
+                        Message = ResponseErrorConstant.BookTimeError,
                         Data = ob
                     };
                 }
@@ -68,14 +70,14 @@ namespace idflApp.Services.management.booking
                     return new CreateBooKDto
                     {
                         Result = true,
-                        Messages = ResponseSuccessConstant.Create,
+                        Message = ResponseSuccessConstant.Create,
                         Data = ob
                     };
                 }
                 return new CreateBooKDto
                 {
                     Result = false,
-                    Messages = ResponseErrorConstant.Create,
+                    Message = ResponseErrorConstant.Create,
                     Data = ob
                 };
 
@@ -109,7 +111,6 @@ namespace idflApp.Services.management.booking
                 return new GetBookDetailDto
                 {
                     BookId = data.Id,
-                    Subject = data.Subject,
                     CompletedAt = data.CompletedAt.ToString("dd/MMM/yyyy"),
                     StartedAt = data.StartedAt.ToString("dd/MMM/yyyy"),
                     EndedAt = data.EndedAt.ToString("dd/MMM/yyyy"),
@@ -137,8 +138,9 @@ namespace idflApp.Services.management.booking
             {
                 data.ProjectId = ob.ProjectId;
                 data.AuditBy = ob.AuditById;
-                data.AuditedAt = ob.BookedAt;
-                data.Name = ob.Name;
+                data.StartedAt = ob.StartedAt;
+                data.EndedAt = ob.EndedAt;
+                data.Purpose = ob.Purpose;
                 data.Description = ob.Description;
                 data.UpdatedAt = DateTime.Now;
                 _context.Update(data);
@@ -146,16 +148,39 @@ namespace idflApp.Services.management.booking
                 return new UpdateBookDto
                 {
                     Result = true,
-                    Messages = ResponseSuccessConstant.Update,
+                    Message = ResponseSuccessConstant.Update,
                     Data = ob
                 };
             };
             return new UpdateBookDto
             {
                 Result = false,
-                Messages = ResponseErrorConstant.Update,
+                Message = ResponseErrorConstant.Update,
                 Data = ob
             };
+        }
+        public GetBookFormDto GetBookForm(Guid id)
+        {
+            var data = _context.Project
+            .Include(s => s.ClientModel)
+            .Include(s => s.StandardModel)
+            .Select(s => new GetBookFormDto
+            {
+                Id = s.Id.ToString(),
+                Client = s.ClientModel != null ? s.ClientModel.CompanyName : "",
+                Standard = s.StandardModel != null ? s.StandardModel.Name : "",
+                Status = s.Status != null ? s.Status : "",
+                Auditors = _context.User.Select(s=> new Auditors{
+                    Id = s.Id.ToString(),
+                    Name = s.AccountName
+                }).ToList()
+
+            }).FirstOrDefault();
+            if (data != null)
+            {
+                return data;
+            }
+            return null;
         }
     }
 }
