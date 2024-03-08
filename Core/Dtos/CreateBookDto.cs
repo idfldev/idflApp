@@ -6,7 +6,7 @@ namespace idflApp.Core.Dtos
     public class CreateBooKDto
     {
         public bool Result { get; set; }
-        public string Messages { get; set; }
+        public string Message { get; set; }
         public CreateBook Data { get; set; }
     }
     public class CreateBook
@@ -17,10 +17,8 @@ namespace idflApp.Core.Dtos
         public Guid ProjectId { get; set; }
         [Required]
         public Guid AuditBy { get; set; }
-        public string? Subject { get; set; }
-        public string? Name { get; set; }
+        public string? Purpose { get; set; }
         public string? Description { get; set; }
-
         [Required]
         public DateTime CreatedAt { get; set; } 
         [Required]

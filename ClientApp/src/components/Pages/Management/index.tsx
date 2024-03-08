@@ -1,10 +1,17 @@
+import { Route, Routes } from "react-router-dom";
 import { LayoutManagement } from "./layout-management";
+import AppRoutes from "AppRoutes";
 
-export const ManagementApp: React.FC = () => {
+export const ManagementApp = () => {
   return (
     <>
       <LayoutManagement>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
+        <Routes>
+          {AppRoutes.map((route, index) => {
+            const { element, ...rest } = route;
+            return <Route key={index} {...rest} element={element} />;
+          })}
+        </Routes>
       </LayoutManagement>
     </>
   );

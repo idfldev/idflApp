@@ -3,7 +3,7 @@ import { TEInput, TERipple } from "tw-elements-react";
 
 export const LoginApp: React.FC = () => {
   return (
-    <section className="h-full bg-neutral-200 dark:bg-neutral-700 flex justify-center">
+    <section className="h-screen w-screen bg-neutral-200 dark:bg-neutral-700 flex justify-center">
       <div className="container h-full p-10">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="w-full">

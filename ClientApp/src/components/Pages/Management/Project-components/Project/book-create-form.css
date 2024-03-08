@@ -1,0 +1,13 @@
+.modal-error {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    width: 50%;
+    transition: 0.7s linear;
+    background-color: rgba(89, 89, 89, 0.638);
+    border-radius: 0.5rem;
+}
+.modal-error-active{
+    top: 10%;
+}

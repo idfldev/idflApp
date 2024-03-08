@@ -17,5 +17,6 @@ namespace idflApp.Core.Models
         public DateTime? ActiveDateAt { get; set; }
         public DateTime? VerifiedDateAt { get; set; }
         public DateTime? DeletedDateAt { get; set; }
+        public List<ProjectModel>? ProjectModels { get; set; }
     }
 }

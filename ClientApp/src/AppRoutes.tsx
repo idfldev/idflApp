@@ -1,20 +1,19 @@
-import Home from "components/Home";
-import { FetchData } from "./components/FetchData";
-import { LoginApp } from "components/Pages/Management/Login/login";
-import { ManagementApp } from "components/Pages/Management";
+import { ProjectApp } from "components/Pages/Management/Project-components/Project";
+import BookCreateForm from "components/Pages/Management/Project-components/Project/book-create-form";
+import { ProjectDetail } from "components/Pages/Management/Project-components/Project/project-detail";
 
 const AppRoutes = [
   {
-    index: true,
-    element: <FetchData />,
+    path: "/",
+    element: <ProjectApp />,
   },
   {
-    path: "/management",
-    element: <LoginApp />,
+    path: "project/book-create/:id",
+    element: <BookCreateForm />,
   },
   {
-    path: "/management-dashboard",
-    element: <ManagementApp />,
+    path: "project/project-detail",
+    element: <ProjectDetail />,
   },
 ];
 

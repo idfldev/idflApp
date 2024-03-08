@@ -64,9 +64,9 @@ namespace Controllers.Management
             }
         }
         [HttpGet("{id}")]
-        public IActionResult GetDetail(Guid id)
+        public IActionResult GetBookForm(Guid id)
         {
-            var response = _bookRepository.GetById(id);
+            var response = _bookRepository.GetBookForm(id);
             return Ok(response);
         }
     }
