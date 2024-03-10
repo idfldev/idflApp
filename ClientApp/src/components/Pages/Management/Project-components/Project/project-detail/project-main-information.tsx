@@ -1,10 +1,123 @@
-import { LayoutManagement } from "../../layout-management";
-
-export const ProjectDetail: React.FC = () => {
+import "./project-main-information.css";
+interface ProjectDetailProp {
+  projectDetail: any | null;
+}
+export const ProjectMainInformationDetail: React.FC<ProjectDetailProp> = (
+  props
+) => {
+  var items = props.projectDetail;
+  if (props.projectDetail === undefined) {
+    return props.projectDetail;
+  }
+  console.log(items);
   return (
     <>
-      <LayoutManagement>
-        <div className="space-y-12 p-10">
+      <div className="p-detail-container">
+        <div className="p-detail-container_account  bg-white p-6">
+          <h1 className="pb-5 font-bold">Account</h1>
+          <div className="p-detail-container_account-child">
+            <h6>Name</h6>
+            <p>{items.client.companyName}</p>
+          </div>
+          <div className="p-detail-container_account-child">
+            <h6>Representator</h6>
+            <p>{items.client.representator}</p>
+          </div>
+          <div className="p-detail-container_account-child">
+            <h6>Title</h6>
+            <p>{items.client.representatorTitle}</p>
+          </div>
+          <div className="p-detail-container_account-child">
+            <h6>Contact Person</h6>
+            <p>{items.client.contactPerson}</p>
+          </div>
+          <div className="p-detail-container_account-child">
+            <h6>Third Party</h6>
+            {items.client.isThirdParty !== true ? "No" : "Yes"}
+          </div>{" "}
+          <div className="p-detail-container_account-child">
+            <h5>Active history</h5>
+          </div>
+        </div>
+        <div className="p-detail-container_main-information  p-6">
+          <h1 className="pb-5 font-bold">Main information</h1>
+          <div className="p-detail-container_main-information_child">
+            <h6>IDFL Code</h6>
+            <p>{items.idflCode}</p>
+          </div>
+          <div className="p-detail-container_main-information_child">
+            <h6>Standard</h6>
+            <p>
+              {items.standard.name}(
+              <span className="font-bold">{items.standard.standardCode}</span>)
+            </p>
+          </div>
+          <div className="p-detail-container_main-information_child space-y-1">
+            <h6>Status</h6>
+            <p>{items.status}</p>
+
+            {items.status === "Pending" && (
+              <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                <div
+                  className="bg-orange-400 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-md"
+                  style={{ width: "50%" }}
+                >
+                  50%
+                </div>
+              </div>
+            )}
+            {items.status === "Approved" && (
+              <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                <div
+                  className="bg-gray-500 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-md"
+                  style={{ width: "30%" }}
+                >
+                  30%
+                </div>
+              </div>
+            )}
+            {items.status === "Verified" && (
+              <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                <div
+                  className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-md"
+                  style={{ width: "80%" }}
+                >
+                  80%
+                </div>
+              </div>
+            )}
+            {items.status === "Certificated" && (
+              <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                <div
+                  className="bg-green-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-md"
+                  style={{ width: "100%" }}
+                >
+                  100%
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="p-detail-container_main-information_child">
+            <h6>Certification Body</h6>
+            <p>{items.certificationBody}</p>
+          </div>
+          <div className="flex justify-between w-full">
+            <div className="p-detail-container_main-information_child">
+              <h6>Issued Certification</h6>
+              <p>{items.issueCertificatedDate}</p>
+            </div>
+            <div className="p-detail-container_main-information_child">
+              <h6>Expired Certification</h6>
+              <p>{items.issueCertificatedDate}</p>
+            </div>
+          </div>
+          
+        </div>
+        <div className="p-detail-container_actions h-screen shadow-sm bg-white p-6">
+          <h1 className="pb-5 font-bold">Actions</h1>
+        </div>
+      </div>
+      {/* <div className="space-y-12 p-10">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
               Profile
@@ -440,8 +553,7 @@ export const ProjectDetail: React.FC = () => {
           >
             Save
           </button>
-        </div>
-      </LayoutManagement>
+        </div> */}
     </>
   );
 };

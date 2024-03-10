@@ -3,7 +3,6 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { Fragment, useEffect, useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
-import { LayoutManagement } from "../../layout-management";
 import React from "react";
 import "./book-create-form.css";
 import { useNavigate } from "react-router";
@@ -35,7 +34,7 @@ export const BookCreateForm: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   var token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImYzNjJiMTc0LWUyNzUtNGIxZi1iMTYwLTZjNWEzNWFmOWRlOCIsIm5iZiI6MTcwOTg5NDI0NywiZXhwIjoxNzA5ODk2MDQ3LCJpYXQiOjE3MDk4OTQyNDd9.1SV0HnvrVLp5j0TrbW4bve3p23AS9dm78SbiybChFHU";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM5ZTUzNTVjLWQ4YjUtNDA0Zi04Zjc1LTM4MTY4MzBhMzM4NyIsIm5iZiI6MTcwOTk1OTMyMCwiZXhwIjoxNzA5OTYxMTIwLCJpYXQiOjE3MDk5NTkzMjB9.vUM-9hfekxH2esQFKzUx5chQnGyGYbREGbA-MC45eFA";
   const getDataFromBook = async () => {
     try {
       const response = await axios.get(
@@ -116,7 +115,7 @@ export const BookCreateForm: React.FC = () => {
         },
       });
       // window.location.reload();
-      navigate("/management-dashboard");
+      navigate("/management");
     } catch (error: any) {
       console.error("Error adding data:", error);
       const errorMessage = error.response.data.message;

@@ -13,9 +13,10 @@ namespace idflApp.Core.Dtos
         public string? Status { get; set; }
         public bool IssueCertificated { get; set; }
         public string? IssueCertificatedDate { get; set; }
-        public ProjectGeneral ProjectGeneral { get; set; }
-        public StandardDto? StandardDto { get; set; }
-        public BookDto? BookDto { get; set; }
+        public ProjectGeneral? ProjectGeneral { get; set; }
+        public StandardDto? Standard{ get; set; }
+        public List<BookDto>? Books { get; set; }
+        public ClientDto? Client { get; set; }
     }
 
     public class StandardDto
@@ -29,7 +30,6 @@ namespace idflApp.Core.Dtos
         public string? Id { get; set; }
         public string? Purpose { get; set; }
         public string? AuditName { get; set; }
-        public string? CompletedName { get; set; }
         public string? CompletedNotes { get; set; }
         public string? Description { get; set; }
         public string? CompletedAt { get; set; }
@@ -39,19 +39,17 @@ namespace idflApp.Core.Dtos
     }
     public class ClientDto
     {
-        public int? AccountNumber { get; set; }
+        public string? Id { get; set; }
         public string? CompanyName { get; set; }
         public string? BusinessLicenseFile { get; set; }
-        public string? TaxNumber { get; set; }
-        public string Representator { get; set; }
+        public string? Representator { get; set; }
         public string? RepresentatorTitle { get; set; }
-        public string? IDCardNumber { get; set; }
         public string? ContactPerson { get; set; }
         public bool IsThirdParty { get; set; }
     }
     public class ProjectGeneral
     {
-        public string Id { get; set; }
+        public string? Id { get; set; }
         public int ProjectCode { get; set; }
         public string? ProjectName { get; set; }
         public int? ClientNumber { get; set; }

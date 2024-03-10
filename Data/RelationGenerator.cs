@@ -93,11 +93,16 @@ namespace idflApp.Data
             {
                 entity.ToTable("dbbooking");
                 entity.HasOne(o => o.ProjectModel)
-                .WithOne(o => o.BookModel)
-                .HasForeignKey<BookModel>(k => k.ProjectId);
+                .WithMany(o => o.BookModels).HasForeignKey(k => k.ProjectId);
                 entity.HasOne(o => o.UserModel)
                 .WithMany(s => s.BookModels)
                 .HasForeignKey(f => f.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(o => o.UserModel)
+             .WithMany(s => s.BookModels)
+             .HasForeignKey(f => f.AuditBy).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(o => o.UserModel)
+            .WithMany(s => s.BookModels)
+            .HasForeignKey(f => f.CompletedBy).OnDelete(DeleteBehavior.Cascade);
             });
         }
         private static void GenerateStandardAnswerRelation(ModelBuilder modelBuilder)

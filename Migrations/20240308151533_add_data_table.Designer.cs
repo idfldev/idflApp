@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using idflApp.Data;
 
@@ -10,9 +11,11 @@ using idflApp.Data;
 namespace idflApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240308151533_add_data_table")]
+    partial class add_data_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,16 +131,16 @@ namespace idflApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9535eb31-2ece-4404-bab7-e00d689c4040"),
+                            Id = new Guid("36c18ca7-abb9-41c7-8b71-64d9633ae99e"),
                             AccountName = "client 1",
                             AccountNumber = 128743,
                             AccountRole = 0,
-                            ActiveAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(862),
+                            ActiveAt = new DateTime(2024, 3, 8, 22, 15, 33, 556, DateTimeKind.Local).AddTicks(5309),
                             Address = "TPHCM",
                             BusinessLicenseFile = "/uploads/docs/122BC4DD.pdf",
                             CompanyName = "CTy TNHH MTV SCC",
                             ContactPerson = "0982288888",
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(862),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 556, DateTimeKind.Local).AddTicks(5308),
                             District = "10",
                             Email = "client_1@gmail.com",
                             FaxNumber = "10099922",
@@ -151,22 +154,22 @@ namespace idflApp.Migrations
                             Representator = "Client example",
                             RepresentatorTitle = "Director Manager",
                             TaxNumber = "12358799",
-                            VerifiedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(863),
+                            VerifiedAt = new DateTime(2024, 3, 8, 22, 15, 33, 556, DateTimeKind.Local).AddTicks(5312),
                             Ward = "5",
                             Website = "scc.com"
                         },
                         new
                         {
-                            Id = new Guid("e866cbe3-8f78-45d6-af23-113e13f2fb7c"),
+                            Id = new Guid("d704fd02-fa40-4544-b8dd-c834d5f29d3e"),
                             AccountName = "client 2",
                             AccountNumber = 123587,
                             AccountRole = 0,
-                            ActiveAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7777),
+                            ActiveAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3840),
                             Address = "TPHCM",
                             BusinessLicenseFile = "/uploads/docs/122BC4DD.pdf",
                             CompanyName = "CTy TNHH MTV SCB",
                             ContactPerson = "0982288888",
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7776),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3834),
                             District = "10",
                             Email = "client_2@gmail.com",
                             FaxNumber = "10099922",
@@ -180,7 +183,7 @@ namespace idflApp.Migrations
                             Representator = "Client example",
                             RepresentatorTitle = "Director Manager",
                             TaxNumber = "12358799",
-                            VerifiedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7777),
+                            VerifiedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3841),
                             Ward = "5",
                             Website = "scc.com"
                         });
@@ -236,9 +239,9 @@ namespace idflApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompletedBy");
-
                     b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("dbbooking", (string)null);
                 });
@@ -369,75 +372,57 @@ namespace idflApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5a321af0-7f06-4b1b-98bd-b7efb5622060"),
+                            Id = new Guid("a0106382-fa3e-4b8b-bf89-ad0523555d28"),
                             CertificationBody = "Test",
-                            CertificationExpirationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ClientId = new Guid("9535eb31-2ece-4404-bab7-e00d689c4040"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7882),
+                            CertificationExpirationDate = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4022),
+                            ClientId = new Guid("36c18ca7-abb9-41c7-8b71-64d9633ae99e"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4038),
                             IdflCode = "223787XC",
                             IsAnotherCertification = true,
                             IsDeleted = false,
                             IsInitialCertification = true,
                             IsRenewalCertification = true,
-                            IssueCertificated = false,
-                            IssueCertificatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IssueCertificated = true,
+                            IssueCertificatedDate = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4037),
                             LicenseNo = "12233XYUC",
-                            StandardId = new Guid("92ea68b9-b837-4956-8957-9df4ea0c03d2"),
+                            StandardId = new Guid("b456ab46-89f8-4ba3-b88b-e9fed6f4ca32"),
                             Status = "Pending"
                         },
                         new
                         {
-                            Id = new Guid("619b9d7b-77ec-4817-aad5-8cdd06d52c15"),
+                            Id = new Guid("a7c9043b-ea33-443c-abfd-55e34b15a72e"),
                             CertificationBody = "certification 1",
-                            CertificationExpirationDate = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7884),
-                            ClientId = new Guid("9535eb31-2ece-4404-bab7-e00d689c4040"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7885),
-                            IdflCode = "223407XC",
+                            CertificationExpirationDate = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4076),
+                            ClientId = new Guid("36c18ca7-abb9-41c7-8b71-64d9633ae99e"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4078),
+                            IdflCode = "223487XC",
                             IsAnotherCertification = true,
                             IsDeleted = false,
                             IsInitialCertification = true,
                             IsRenewalCertification = false,
                             IssueCertificated = false,
-                            IssueCertificatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IssueCertificatedDate = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4077),
                             LicenseNo = "12233XYUC",
-                            StandardId = new Guid("92ea68b9-b837-4956-8957-9df4ea0c03d2"),
+                            StandardId = new Guid("b456ab46-89f8-4ba3-b88b-e9fed6f4ca32"),
                             Status = "Verified"
                         },
                         new
                         {
-                            Id = new Guid("70d58ae3-96fc-4a2b-9bea-4a7ce74c92d5"),
+                            Id = new Guid("580c6acb-1ce2-4e10-8c21-7de800a3ffe6"),
                             CertificationBody = "certification 2",
-                            CertificationExpirationDate = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7888),
-                            ClientId = new Guid("9535eb31-2ece-4404-bab7-e00d689c4040"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7889),
-                            IdflCode = "223TTT010",
-                            IsAnotherCertification = true,
-                            IsDeleted = false,
-                            IsInitialCertification = true,
-                            IsRenewalCertification = false,
-                            IssueCertificated = true,
-                            IssueCertificatedDate = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7889),
-                            LicenseNo = "12233XYUC",
-                            StandardId = new Guid("92ea68b9-b837-4956-8957-9df4ea0c03d2"),
-                            Status = "Certificated"
-                        },
-                        new
-                        {
-                            Id = new Guid("12a83536-5327-4392-bd1e-9fceb0a6a2f2"),
-                            CertificationBody = "certification 3",
-                            CertificationExpirationDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ClientId = new Guid("9535eb31-2ece-4404-bab7-e00d689c4040"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7892),
+                            CertificationExpirationDate = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4080),
+                            ClientId = new Guid("36c18ca7-abb9-41c7-8b71-64d9633ae99e"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4081),
                             IdflCode = "223TTT009",
                             IsAnotherCertification = true,
                             IsDeleted = false,
                             IsInitialCertification = true,
                             IsRenewalCertification = false,
-                            IssueCertificated = false,
-                            IssueCertificatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IssueCertificated = true,
+                            IssueCertificatedDate = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4081),
                             LicenseNo = "12233XYUC",
-                            StandardId = new Guid("92ea68b9-b837-4956-8957-9df4ea0c03d2"),
-                            Status = "Approved"
+                            StandardId = new Guid("b456ab46-89f8-4ba3-b88b-e9fed6f4ca32"),
+                            Status = "Completed"
                         });
                 });
 
@@ -578,8 +563,8 @@ namespace idflApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("92ea68b9-b837-4956-8957-9df4ea0c03d2"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7804),
+                            Id = new Guid("b456ab46-89f8-4ba3-b88b-e9fed6f4ca32"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3945),
                             Description = "IDFL may not issue an OCS scope certificate to an organization which holds a GOTS scope certificate with another certification body, unless the GOTS scope certificate is in the process of being transferred to IDFL.",
                             IsActive = true,
                             IsDeleted = false,
@@ -588,8 +573,8 @@ namespace idflApp.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e7b8d7c9-45f8-4086-b7b1-2413fb821aa6"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7821),
+                            Id = new Guid("c9a2f250-2e10-44cb-9aef-8ac75723a958"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3958),
                             Description = "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.",
                             IsActive = true,
                             IsDeleted = false,
@@ -598,8 +583,8 @@ namespace idflApp.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3c8d8f29-0b80-4b45-a844-3a5899bfbbd3"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7822),
+                            Id = new Guid("245d58b9-6baf-44af-8649-4138af83b37c"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3960),
                             Description = "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.",
                             IsActive = true,
                             IsDeleted = false,
@@ -608,8 +593,8 @@ namespace idflApp.Migrations
                         },
                         new
                         {
-                            Id = new Guid("91d1709f-7106-4ef1-8b17-66c0848e22e6"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7823),
+                            Id = new Guid("75eff706-8001-4ba4-bc40-2b2151680d2f"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3961),
                             Description = "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.",
                             IsActive = true,
                             IsDeleted = false,
@@ -618,8 +603,8 @@ namespace idflApp.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4f9815d8-d21e-4369-8f2a-5635f133d828"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7825),
+                            Id = new Guid("e26b2fa4-55b9-4672-b0b6-189d165bde9f"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3963),
                             Description = "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.",
                             IsActive = true,
                             IsDeleted = false,
@@ -628,8 +613,8 @@ namespace idflApp.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0434ef6e-cedf-4077-8c10-2451d28f08e4"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7814),
+                            Id = new Guid("6397bfea-d9a3-4b56-9bcc-86d520b38e51"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3947),
                             Description = "IDFL may not issue a GOTS scope certificate to an organization which holds a OCS scope certificate with another certification body, unless the GOTS scope certificate is in the process of being transferred to IDFL.",
                             IsActive = true,
                             IsDeleted = false,
@@ -638,8 +623,8 @@ namespace idflApp.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4317d086-f8b4-402f-85c7-d9a49e0f5b17"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7816),
+                            Id = new Guid("d97c83a4-aa24-46ea-aa8a-2349dcc4eb54"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3953),
                             Description = "IDFL may not issue a GRS scope certificate to an organization which holds a RCS scope certificate with another certification body, unless the RCS scope certificate is in the process of being transferred to IDFL.",
                             IsActive = true,
                             IsDeleted = false,
@@ -648,8 +633,8 @@ namespace idflApp.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fbdd90f8-335c-4865-92eb-30b4ce69b306"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7818),
+                            Id = new Guid("7c277fc7-ed9b-434b-bd4d-5cb1bfd7d5be"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3955),
                             Description = "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.",
                             IsActive = true,
                             IsDeleted = false,
@@ -658,8 +643,8 @@ namespace idflApp.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d35e7b38-5327-4da4-8a54-4a954e27d159"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7819),
+                            Id = new Guid("c50b412b-4363-45ef-b881-61199aec3882"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3957),
                             Description = "IDFL may not issue an RCS scope certificate to an organization which holds a GRS scope certificate with another certification body, unless the GRS scope certificate is in the process of being transferred to IDFL.",
                             IsActive = true,
                             IsDeleted = false,
@@ -704,27 +689,27 @@ namespace idflApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("89dfb31c-92b4-48e8-a712-fcd3771c02f5"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7847),
+                            Id = new Guid("9cabd458-c107-4205-8752-4742408b01ac"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(3996),
                             IsActive = true,
                             Question = "Are there any subcontractor facilities that trade / handle / process certified products in this scope of certification? If so, please indicate by noting in the List of Activities / Processes",
-                            StandardId = new Guid("92ea68b9-b837-4956-8957-9df4ea0c03d2")
+                            StandardId = new Guid("b456ab46-89f8-4ba3-b88b-e9fed6f4ca32")
                         },
                         new
                         {
-                            Id = new Guid("828f184b-4512-4429-96fc-ae0cabaf9ec1"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7851),
+                            Id = new Guid("fd9fd505-7f2b-4243-89b1-6c1fab65ec3b"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4000),
                             IsActive = true,
                             Question = "OEKO-TEX STEP Environmental Performance Requirements | Yêu cầu về Hiệu suất Môi trường của Oeko - Tex Step",
-                            StandardId = new Guid("92ea68b9-b837-4956-8957-9df4ea0c03d2")
+                            StandardId = new Guid("b456ab46-89f8-4ba3-b88b-e9fed6f4ca32")
                         },
                         new
                         {
-                            Id = new Guid("096105bf-6598-48ee-932e-2c00f05ea7b0"),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 285, DateTimeKind.Local).AddTicks(7852),
+                            Id = new Guid("d85fb191-c7f6-4c1e-83c6-decf01363f87"),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 557, DateTimeKind.Local).AddTicks(4002),
                             IsActive = true,
                             Question = "SCS Recycled Content Verification | Xác Minh Thành Phần Tái Chế SCS",
-                            StandardId = new Guid("92ea68b9-b837-4956-8957-9df4ea0c03d2")
+                            StandardId = new Guid("b456ab46-89f8-4ba3-b88b-e9fed6f4ca32")
                         });
                 });
 
@@ -802,10 +787,10 @@ namespace idflApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c9e5355c-d8b5-404f-8f75-3816830a3387"),
+                            Id = new Guid("8f9d93c2-1cee-47b6-89cc-d7d83e5eb346"),
                             AccountName = "Test 1",
-                            ActiveDateAt = new DateTime(2024, 3, 9, 11, 40, 8, 283, DateTimeKind.Local).AddTicks(6992),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 283, DateTimeKind.Local).AddTicks(6979),
+                            ActiveDateAt = new DateTime(2024, 3, 8, 22, 15, 33, 555, DateTimeKind.Local).AddTicks(850),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 555, DateTimeKind.Local).AddTicks(838),
                             Email = "test_1@gmail.com",
                             IsActive = true,
                             IsDeleted = false,
@@ -813,14 +798,14 @@ namespace idflApp.Migrations
                             Password = "m9fUsQskgQAZZPVNkXc3ag==",
                             Phone = "123587777",
                             Roles = 0,
-                            VerifiedDateAt = new DateTime(2024, 3, 9, 11, 40, 8, 283, DateTimeKind.Local).AddTicks(6993)
+                            VerifiedDateAt = new DateTime(2024, 3, 8, 22, 15, 33, 555, DateTimeKind.Local).AddTicks(850)
                         },
                         new
                         {
-                            Id = new Guid("178d0204-e0d3-499f-8b3c-1d0a9f9331b1"),
+                            Id = new Guid("193290ee-672b-4c92-bb68-484cc3e1f028"),
                             AccountName = "Test 2",
-                            ActiveDateAt = new DateTime(2024, 3, 9, 11, 40, 8, 284, DateTimeKind.Local).AddTicks(3899),
-                            CreatedAt = new DateTime(2024, 3, 9, 11, 40, 8, 284, DateTimeKind.Local).AddTicks(3899),
+                            ActiveDateAt = new DateTime(2024, 3, 8, 22, 15, 33, 555, DateTimeKind.Local).AddTicks(8017),
+                            CreatedAt = new DateTime(2024, 3, 8, 22, 15, 33, 555, DateTimeKind.Local).AddTicks(8015),
                             Email = "test_2@gmail.com",
                             IsActive = true,
                             IsDeleted = false,
@@ -828,20 +813,21 @@ namespace idflApp.Migrations
                             Password = "m9fUsQskgQAZZPVNkXc3ag==",
                             Phone = "123587777",
                             Roles = 1,
-                            VerifiedDateAt = new DateTime(2024, 3, 9, 11, 40, 8, 284, DateTimeKind.Local).AddTicks(3900)
+                            VerifiedDateAt = new DateTime(2024, 3, 8, 22, 15, 33, 555, DateTimeKind.Local).AddTicks(8018)
                         });
                 });
 
             modelBuilder.Entity("idflApp.Core.Models.BookModel", b =>
                 {
-                    b.HasOne("idflApp.Core.Models.UserModel", "UserModel")
-                        .WithMany("BookModels")
-                        .HasForeignKey("CompletedBy")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("idflApp.Core.Models.ProjectModel", "ProjectModel")
                         .WithMany("BookModels")
                         .HasForeignKey("ProjectId");
+
+                    b.HasOne("idflApp.Core.Models.UserModel", "UserModel")
+                        .WithMany("BookModels")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ProjectModel");
 

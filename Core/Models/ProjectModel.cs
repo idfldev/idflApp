@@ -10,8 +10,7 @@ namespace idflApp.Core.Models
         public Guid StandardId { get; set; }
         public string? IdflCode { get; set; }
         public StandardModel? StandardModel { get; set; }
-        public Guid? BookId { get; set; }
-        public BookModel? BookModel { get; set; }
+        public List<BookModel>? BookModels { get; set; }
         public Guid ClientId { get; set; }
         public List<ProjectStandardModel>? ProjectStandardModels { get; set; }
         public Guid? ProjectGeneralId { get; set; }
@@ -27,7 +26,7 @@ namespace idflApp.Core.Models
         public bool IsDeleted { get; set; }
         public string? Status { get; set; }
         public Guid? HandledBy { get; set; }
-        public UserModel UserModel { get; set; }
+        public UserModel? UserModel { get; set; }
         public bool IssueCertificated { get; set; }
         public DateTime IssueCertificatedDate { get; set; }
         public List<StandardAnswerModel>? StandardAnswerModels { get; set; }
