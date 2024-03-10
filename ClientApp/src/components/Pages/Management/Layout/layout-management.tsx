@@ -1,6 +1,5 @@
 import React from "react";
-import { Container } from "reactstrap";
-import { NavbarManagement } from "./Navbar/navbar-management";
+import { NavbarManagement } from "./navbar-management";
 interface LayoutManagementProps {
   children?: React.ReactNode;
 }
