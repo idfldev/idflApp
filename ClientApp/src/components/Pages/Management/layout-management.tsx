@@ -8,9 +8,9 @@ export const LayoutManagement: React.FC<LayoutManagementProps> = (props) => {
   return (
     <div className="flex">
       <NavbarManagement />
-      <Container className="border">
+      <div className="border overflow-x-auto w-full">
         {props.children !== undefined && props.children}
-      </Container>
+      </div>
     </div>
   );
 };

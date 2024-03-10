@@ -27,7 +27,7 @@ namespace idflApp.Data
             var account_2 = new UserModel
             {
                 Id = Guid.NewGuid(),
-                AccountName = "Test 1",
+                AccountName = "Test 2",
                 Email = "test_2@gmail.com",
                 Phone = "123587777",
                 Roles = Constants.Role.staff,
@@ -235,32 +235,47 @@ namespace idflApp.Data
                 IsInitialCertification = true,
                 LicenseNo = "12233XYUC",
                 CertificationBody = "Test",
-                CertificationExpirationDate = DateTime.Now,
                 Status = ProjectConstant.ProjectStatus.Pending.ToString(),
-                IssueCertificated = true,
-                IssueCertificatedDate = DateTime.Now,
+                IssueCertificated = false,
                 CreatedAt = DateTime.Now
 
             };
             var project_2 = new ProjectModel
             {
                 Id = Guid.NewGuid(),
-                IdflCode = "223487XC",
+                IdflCode = "223407XC",
                 StandardId = ocs.Id,
                 ClientId = client_1.Id,
                 IsAnotherCertification = true,
                 IsRenewalCertification = false,
                 IsInitialCertification = true,
                 LicenseNo = "12233XYUC",
-                CertificationBody = "Test",
+                CertificationBody = "certification 1",
                 CertificationExpirationDate = DateTime.Now,
                 Status = ProjectConstant.ProjectStatus.Verified.ToString(),
                 IssueCertificated = false,
-                IssueCertificatedDate = DateTime.Now,
                 CreatedAt = DateTime.Now
 
             };
             var project_3 = new ProjectModel
+            {
+                Id = Guid.NewGuid(),
+                IdflCode = "223TTT010",
+                StandardId = ocs.Id,
+                ClientId = client_1.Id,
+                IsAnotherCertification = true,
+                IsRenewalCertification = false,
+                IsInitialCertification = true,
+                LicenseNo = "12233XYUC",
+                CertificationBody = "certification 2",
+                CertificationExpirationDate = DateTime.Now,
+                Status = ProjectConstant.ProjectStatus.Certificated.ToString(),
+                IssueCertificated = true,
+                IssueCertificatedDate = DateTime.Now,
+                CreatedAt = DateTime.Now
+
+            };
+             var project_4 = new ProjectModel
             {
                 Id = Guid.NewGuid(),
                 IdflCode = "223TTT009",
@@ -270,11 +285,9 @@ namespace idflApp.Data
                 IsRenewalCertification = false,
                 IsInitialCertification = true,
                 LicenseNo = "12233XYUC",
-                CertificationBody = "project_3",
-                CertificationExpirationDate = DateTime.Now,
-                Status = ProjectConstant.ProjectStatus.Completed.ToString(),
-                IssueCertificated = true,
-                IssueCertificatedDate = DateTime.Now,
+                CertificationBody = "certification 3",
+                Status = ProjectConstant.ProjectStatus.Approved.ToString(),
+                IssueCertificated = false,
                 CreatedAt = DateTime.Now
 
             };
@@ -282,7 +295,7 @@ namespace idflApp.Data
             .Entity<ProjectModel>()
             .HasData(new List<ProjectModel>
             {
-                project_1, project_2,project_3
+                project_1, project_2,project_3, project_4
             });
         }
     }

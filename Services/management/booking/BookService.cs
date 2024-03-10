@@ -64,7 +64,9 @@ namespace idflApp.Services.management.booking
                 ob.CreatedAt = DateTime.Now;
                 if (ob.UserId != Guid.Empty && ob.ProjectId != Guid.Empty)
                 {
+                    
                     BookModel bookModel = _mapper.Map<BookModel>(ob);
+                    bookModel.IsBooked = true;
                     _context.Add(bookModel);
                     _context.SaveChanges();
                     return new CreateBooKDto

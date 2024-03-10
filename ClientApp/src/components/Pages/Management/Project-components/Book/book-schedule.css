@@ -1,0 +1,55 @@
+/* BookScheduleApp.css */
+
+/* Calendar Container */
+.calendar-container {
+    margin-bottom: 20px;
+  }
+  
+  /* Schedule Container */
+  .schedule-container {
+    display: flex;
+    border: 1px solid #ccc;
+  }
+  
+  /* Staff Column */
+  .staff-column {
+    flex-basis: 100px;
+    border-right: 1px solid #ccc;
+  }
+  
+  .staff {
+    padding: 8px;
+  }
+  
+  /* Days Row */
+  .days-row {
+    flex-grow: 1;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .day {
+    flex-grow: 1;
+    padding: 8px;
+  }
+  
+  /* Appointments Grid */
+  .appointments-grid {
+    flex-grow: 1;
+    display: flex;
+  }
+  
+  .staff-appointments {
+    flex-grow: 1;
+    border-right: 1px solid #ccc;
+  }
+  
+  .day-appointments {
+    flex-grow: 1;
+  }
+  
+  .appointment {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+  }
+  

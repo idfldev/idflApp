@@ -1,6 +1,7 @@
+import AppointmentScheduler from "components/Pages/Management/Project-components/Book/book-schedule";
 import { ProjectApp } from "components/Pages/Management/Project-components/Project";
-import BookCreateForm from "components/Pages/Management/Project-components/Project/book-create-form";
-import { ProjectDetail } from "components/Pages/Management/Project-components/Project/project-detail";
+import BookCreateForm from "components/Pages/Management/Project-components/Project/project-create/book-create-form";
+import { ProjectDetailApp } from "components/Pages/Management/Project-components/Project/project-detail";
 
 const AppRoutes = [
   {
@@ -12,8 +13,12 @@ const AppRoutes = [
     element: <BookCreateForm />,
   },
   {
-    path: "project/project-detail",
-    element: <ProjectDetail />,
+    path: "project/project-detail/:id",
+    element: <ProjectDetailApp />,
+  },
+  {
+    path: "project/book-schedule",
+    element: <AppointmentScheduler />,
   },
 ];
 

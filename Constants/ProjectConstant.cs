@@ -6,7 +6,8 @@
         {
             Pending,
             Verified,
-            Completed
+            Approved,
+            Certificated
         }
     }
 }

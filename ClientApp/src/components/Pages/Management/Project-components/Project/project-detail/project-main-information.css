@@ -1,0 +1,32 @@
+.p-detail-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr 1fr;
+  padding: 3rem 2rem;
+}
+
+.p-detail-container_account,
+.p-detail-container_actions {
+  width: 100%;
+  border: 1px solid rgb(241, 241, 241);
+}
+.p-detail-container_main-information{
+  background-color: rgb(243, 243, 243);
+}
+.p-detail-container_account-child {
+  padding: 0.7rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.p-detail-container_main-information_child {
+  padding: 0.7rem 0;
+}
+
+.p-detail-container_main-information_child h6 {
+  font-weight: 600;
+}
+
+.p-detail-container_account-child h6 {
+  font-weight: 600;
+}
