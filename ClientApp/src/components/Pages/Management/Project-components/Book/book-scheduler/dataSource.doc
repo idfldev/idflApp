@@ -1,0 +1,71 @@
+// import { SchedulerTypes } from "devextreme-react/scheduler";
+
+// type Appointment = SchedulerTypes.Appointment & {
+//   auditors: number;
+// };
+
+// type Resource = {
+//   text: string;
+//   id: number;
+//   startDate: number;
+//   endedDate:number;
+  
+// };
+
+// export const data: Appointment[] = [
+//   {
+//     text: "Nhà máy SCCC",
+//     description: "them tong tin",
+//     startDate: new Date("2024-03-01T16:00:00.000Z"),
+//     endDate: new Date("2024-03-03T16:30:00.000Z"),
+//     auditors: 4,
+//   },
+//   {
+//     text: "Nhà máy SCCC",
+//     description: "them tong tin",
+//     startDate: new Date("2024-03-02T16:00:00.000Z"),
+//     endDate: new Date("2024-03-03T16:30:00.000Z"),
+//     auditors: 3,
+//   },
+//   {
+//     text: "Nhà máy SCCC",
+//     description: "them tong tin",
+//     startDate: new Date("2024-03-02T16:00:00.000Z"),
+//     endDate: new Date("2024-03-03T16:30:00.000Z"),
+//     auditors: 3,
+//   },
+//   {
+//     text: "Nhà máy SCCC",
+//     description:"them tong tin",
+//     startDate: new Date("2024-03-02T16:00:00.000Z"),
+//     endDate: new Date("2024-03-03T16:30:00.000Z"),
+//     auditors: 3,
+//   },
+// ];
+
+// export const resourcesData: Resource[] = [
+//   {
+//     text: "Tommy To",
+//     id: 1,
+//     startDate: 2,
+//     endedDate: 4
+//   },
+//   {
+//     text: "David Pham",
+//     id: 2,
+//     startDate: 4,
+//     endedDate: 4
+//   },
+//   {
+//     text: "Sandra Tom",
+//     id: 3,
+//     startDate: 5,
+//     endedDate: 7
+//   },
+//   {
+//     text: "Sandra Johnson",
+//     id: 4,
+//     startDate: 9,
+//     endedDate: 10
+//   },
+// ];

@@ -7,6 +7,9 @@ namespace idflApp.Core.Models
 {
     public class UserModel : AccountModel
     {
+        public string? Title { get; set; }
+        public string? SubTitle { get; set; }
+        public string? Icon { get; set; }
         public Role Roles { get; set; }
         [JsonIgnore]
         public string Password { get; set; }
