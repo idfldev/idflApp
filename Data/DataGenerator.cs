@@ -13,9 +13,11 @@ namespace idflApp.Data
             var account_1 = new UserModel
             {
                 Id = Guid.NewGuid(),
-                AccountName = "Test 1",
+                AccountName = "Pham Anh Doan",
+                Title = "Developer",
                 Email = "test_1@gmail.com",
                 Phone = "123587777",
+                Icon = "https://picsum.photos/24",
                 Roles = Constants.Role.management,
                 Password = Utils.HashPasswordUtils.EncryptCode("1234"),
                 CreatedAt = DateTime.Now,
@@ -27,9 +29,27 @@ namespace idflApp.Data
             var account_2 = new UserModel
             {
                 Id = Guid.NewGuid(),
-                AccountName = "Test 2",
+                AccountName = "Pham Anh Teo",
+                Title = "Auditor",
                 Email = "test_2@gmail.com",
                 Phone = "123587777",
+                Roles = Constants.Role.staff,
+                Icon = "https://picsum.photos/24",
+                Password = Utils.HashPasswordUtils.EncryptCode("1234"),
+                CreatedAt = DateTime.Now,
+                IsActive = true,
+                ActiveDateAt = DateTime.Now,
+                IsVerified = true,
+                VerifiedDateAt = DateTime.Now
+            };
+            var account_3 = new UserModel
+            {
+                Id = Guid.NewGuid(),
+                AccountName = "Tran thanh sang",
+                Title = "Auditor Supervisor",
+                Email = "test_3@gmail.com",
+                Phone = "123587777",
+                Icon = "https://picsum.photos/24",
                 Roles = Constants.Role.staff,
                 Password = Utils.HashPasswordUtils.EncryptCode("1234"),
                 CreatedAt = DateTime.Now,
@@ -42,7 +62,7 @@ namespace idflApp.Data
             .Entity<UserModel>()
             .HasData(new List<UserModel>
             {
-                    account_1, account_2
+                    account_1, account_2,account_3
             });
 
             var client_1 = new ClientModel

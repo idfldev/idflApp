@@ -8,7 +8,7 @@ namespace idflApp.Services.management.booking.interfaces
         public UpdateBookDto Update(UpdateBook ob);
         public GetBookDetailDto GetById(Guid id);
         public GetBookFormDto GetBookForm(Guid id);
-        //public IEnumerable<string> Find();
+        public  IEnumerable<FindBookTimeLineDto> Find();
         //public bool Delete(Guid id);
     };
 }

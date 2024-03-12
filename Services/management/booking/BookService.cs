@@ -26,7 +26,7 @@ namespace idflApp.Services.management.booking
             var books = _context.Book.Where(s => s.AuditBy == auditId).ToList();
             foreach (var book in books)
             {
-                if (book.StartedAt.Date >= startedAt && book.EndedAt.Date <= endedDate.Date)
+                if (book.StartDate.Date >= startedAt && book.EndDate.Date <= endedDate.Date)
                 {
                     // If any book falls within the date range, return true
                     return true;
@@ -52,7 +52,7 @@ namespace idflApp.Services.management.booking
                     };
                 }
                 // check start data and end date exist
-                if (CheckExistBookDate(ob.StartedAt, ob.EndedAt, ob.AuditBy))
+                if (CheckExistBookDate(ob.StartDate, ob.EndDate, ob.AuditBy))
                 {
                     return new CreateBooKDto
                     {
@@ -64,7 +64,7 @@ namespace idflApp.Services.management.booking
                 ob.CreatedAt = DateTime.Now;
                 if (ob.UserId != Guid.Empty && ob.ProjectId != Guid.Empty)
                 {
-                    
+
                     BookModel bookModel = _mapper.Map<BookModel>(ob);
                     bookModel.IsBooked = true;
                     _context.Add(bookModel);
@@ -113,9 +113,9 @@ namespace idflApp.Services.management.booking
                 return new GetBookDetailDto
                 {
                     BookId = data.Id,
-                    CompletedAt = data.CompletedAt.ToString("dd/MMM/yyyy"),
-                    StartedAt = data.StartedAt.ToString("dd/MMM/yyyy"),
-                    EndedAt = data.EndedAt.ToString("dd/MMM/yyyy"),
+                    CompletedAt = data.CompletedDate.ToString("dd/MMM/yyyy"),
+                    StartedAt = data.StartDate.ToString("dd/MMM/yyyy"),
+                    EndedAt = data.EndDate.ToString("dd/MMM/yyyy"),
                     CompletedAccount = completerData,
                     Project = new Project
                     {
@@ -140,9 +140,8 @@ namespace idflApp.Services.management.booking
             {
                 data.ProjectId = ob.ProjectId;
                 data.AuditBy = ob.AuditById;
-                data.StartedAt = ob.StartedAt;
-                data.EndedAt = ob.EndedAt;
-                data.Purpose = ob.Purpose;
+                data.StartDate = ob.StartedAt;
+                data.EndDate = ob.EndedAt;
                 data.Description = ob.Description;
                 data.UpdatedAt = DateTime.Now;
                 _context.Update(data);
@@ -172,7 +171,8 @@ namespace idflApp.Services.management.booking
                 Client = s.ClientModel != null ? s.ClientModel.CompanyName : "",
                 Standard = s.StandardModel != null ? s.StandardModel.Name : "",
                 Status = s.Status != null ? s.Status : "",
-                Auditors = _context.User.Select(s=> new Auditors{
+                Auditors = _context.User.Select(s => new Auditors
+                {
                     Id = s.Id.ToString(),
                     Name = s.AccountName
                 }).ToList()
@@ -183,6 +183,33 @@ namespace idflApp.Services.management.booking
                 return data;
             }
             return null;
+        }
+
+        public IEnumerable<FindBookTimeLineDto> Find()
+        {
+            var books = _context.User.Include(c => c.BookModels).Select(s => new FindBookTimeLineDto
+            {
+                Id = s.Id.ToString(),
+                Label = new Label
+                {
+                    Icon = s.Icon != null ? s.Icon : "",
+                    Title = s.AccountName != null ? s.AccountName : "",
+                    Subtitle = s.Title
+                },
+                Data = _context.Book.Where(m=>m.AuditBy == s.Id).Select(book => new BookingData
+                {
+                    Id = book.AuditBy.ToString()!,
+                    Title = book.Title != null ? book.Title : "",
+                    Subtitle = book.SubTitle != null ? book.SubTitle : "",
+                    Description = book.Description != null ? book.Description: "",
+                    BgColor = book.BgColor != null ? book.BgColor : "",
+                    StartDate = book.StartDate,
+                    EndDate = book.EndDate,
+                    Occupancy = book.Occupancy
+                }).ToList()
+
+            }).ToList();
+           return books;
         }
     }
 }

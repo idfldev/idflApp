@@ -36,10 +36,9 @@ namespace idflApp.Services.management.Projects
                     .Select(s => new BookingDto
                     {
                         Id = s.Id.ToString(),
-                        Purpose = s.Purpose,
                         IsBooked = s.IsBooked,
-                        StartedDate = s.StartedAt.ToString("dd/MMM/yy"),
-                        EndedDate = s.EndedAt.ToString("dd/MMM/yy")
+                        StartedDate = s.StartDate.ToString("dd/MMM/yy"),
+                        EndedDate = s.EndDate.ToString("dd/MMM/yy")
                     }).ToList() : null,
                     CertificationBody = s.CertificationBody != null ? s.CertificationBody : "",
                     CertificationExpirationDate = s.CertificationExpirationDate.ToString("dd/MMM/yy"),
@@ -85,13 +84,12 @@ namespace idflApp.Services.management.Projects
                     Books = project.BookModels != null ? project.BookModels.Select(s => new BookDto
                     {
                         Id = s.Id.ToString(),
-                        Purpose = s.Purpose,
                         AuditName = _context.User.Where(i => i.Id.Equals(s.AuditBy)).Select(s => s.AccountName).First(),
                         CompletedNotes = s.CompletedNotes,
                         Description = s.Description,
-                        CompletedAt = s.CompletedAt.ToString("dd/MMM/yy"),
-                        StartedAt = s.StartedAt.ToString("dd/MMM/yy"),
-                        EndedAt = s.EndedAt.ToString("dd/MMM/yy"),
+                        CompletedAt = s.CompletedDate.ToString("dd/MMM/yy"),
+                        StartedAt = s.StartDate.ToString("dd/MMM/yy"),
+                        EndedAt = s.EndDate.ToString("dd/MMM/yy"),
                     }).ToList() : null,
                     Client = new ClientDto
                     {

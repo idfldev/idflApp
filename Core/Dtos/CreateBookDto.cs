@@ -17,15 +17,19 @@ namespace idflApp.Core.Dtos
         public Guid ProjectId { get; set; }
         [Required]
         public Guid AuditBy { get; set; }
-        public string? Purpose { get; set; }
-
+        [Required]
+        public string Title { get; set; }
+        [Required]
+        public string SubTitle { get; set; }
+        public string? BgColor { get; set; }
+        public string? Occupancy { get; set; }
         public string? Description { get; set; }
         [Required]
-        public DateTime CreatedAt { get; set; } 
+        public DateTime CreatedAt { get; set; }
         [Required]
-        public DateTime StartedAt { get; set; }
+        public DateTime StartDate { get; set; }
         [Required]
-        public DateTime EndedAt { get; set; }
+        public DateTime EndDate { get; set; }
 
     }
 }

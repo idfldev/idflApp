@@ -8,7 +8,6 @@ using idflApp.Exceptions;
 namespace Controllers.Management
 {
     [ApiController]
-    [Authorize]
     [Route("api/management/book")]
     public class BookController : ControllerBase
     {
@@ -67,6 +66,12 @@ namespace Controllers.Management
         public IActionResult GetBookForm(Guid id)
         {
             var response = _bookRepository.GetBookForm(id);
+            return Ok(response);
+        }
+        [HttpGet]
+        public IActionResult FindTimeline()
+        {
+            var response = _bookRepository.Find();
             return Ok(response);
         }
     }
