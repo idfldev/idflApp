@@ -1,0 +1,1 @@
+export const BOOK_URL = "api/management/book/";

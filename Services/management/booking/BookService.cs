@@ -198,7 +198,7 @@ namespace idflApp.Services.management.booking
                 },
                 Data = _context.Book.Where(m=>m.AuditBy == s.Id).Select(book => new BookingData
                 {
-                    Id = book.AuditBy.ToString()!,
+                    Id = book.Id.ToString(),
                     Title = book.Title != null ? book.Title : "",
                     Subtitle = book.SubTitle != null ? book.SubTitle : "",
                     Description = book.Description != null ? book.Description: "",

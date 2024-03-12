@@ -1,16 +1,19 @@
 import { Scheduler, SchedulerProjectData } from "@bitnoi.se/react-scheduler";
 import { useCallback, useEffect, useState } from "react";
-import { SchedulerData } from "./mock-data";
+import "./book-timeline.css"
+import ServiceBook from "services/service-book";
 interface ParsedDatesRange {
   startDate: Date;
   endDate: Date;
 }
 const BookTimeSchedule: React.FC = () => {
+  var resources = ServiceBook()
+  console.log("fetching data: ", resources)
   const [range, setRange] = useState<ParsedDatesRange>({
     startDate: new Date(),
     endDate: new Date(),
   });
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   const handleRangeChange = useCallback((range: ParsedDatesRange) => {
     setRange(range);
   }, []);
@@ -21,17 +24,17 @@ const BookTimeSchedule: React.FC = () => {
     <>
       <div>
         <Scheduler
-          data={SchedulerData}
+          data={resources}
           isLoading={false}
           onRangeChange={handleRangeChange}
           onTileClick={handleTitleClick}
           onItemClick={(data) =>
             alert(
               "Item was click" +
-                "" +
-                data.label.title +
-                "" +
-                data.label.subtitle
+              "" +
+              data.label.title +
+              "" +
+              data.label.subtitle
             )
           }
           config={{
