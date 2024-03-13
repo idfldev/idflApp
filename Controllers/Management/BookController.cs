@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using idflApp.Services.management.booking.interfaces;
 using idflApp.Core.Models;
 using idflApp.Exceptions;
+using static idflApp.Core.Dtos.CreateBookRequestDto;
 
 namespace Controllers.Management
 {
     [ApiController]
+    [Authorize]
     [Route("api/management/book")]
     public class BookController : ControllerBase
     {
@@ -19,13 +21,13 @@ namespace Controllers.Management
             _logger = logger;
         }
         [HttpPost]
-        public IActionResult Create([FromBody] CreateBook dto)
+        public IActionResult Create([FromBody] CreateBookRequestDto bookRequest)
         {
             try
             {
                 var user = HttpContext.Items["User"] as UserModel;
-                dto.UserId = user!.Id;
-                var result = _bookRepository.Create(dto);
+                bookRequest.UserId = user!.Id;
+                var result = _bookRepository.Create(bookRequest);
                 if (result.Result == true)
                 {
 
@@ -33,7 +35,7 @@ namespace Controllers.Management
                 }
                 else
                 {
-                    _logger.LogError("BookController create", dto);
+                    _logger.LogError("BookController create", bookRequest);
                     return BadRequest(result);
                 }
 
@@ -43,36 +45,37 @@ namespace Controllers.Management
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut]
-        public IActionResult Update(UpdateBook ob)
-        {
-            try
-            {
-                var response = _bookRepository.Update(ob);
-                if (response.Result == true)
-                {
-                    return Ok(response);
-                }
-                return BadRequest(response);
-            }
-            catch (System.Exception ex)
-            {
+        // [TODO]
+        //[HttpPut]
+        //public IActionResult Update(UpdateBook ob)
+        //{
+        //    try
+        //    {
+        //        var response = _bookRepository.Update(ob);
+        //        if (response.Result == true)
+        //        {
+        //            return Ok(response);
+        //        }
+        //        return BadRequest(response);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
                 
-                _logger.LogError("Book controller update", ob);
-               return BadRequest(ex.Message);
-            }
-        }
+        //        _logger.LogError("Book controller update", ob);
+        //       return BadRequest(ex.Message);
+        //    }
+        //}
         [HttpGet("{id}")]
         public IActionResult GetBookForm(Guid id)
         {
-            var response = _bookRepository.GetBookForm(id);
-            return Ok(response);
+           var response = _bookRepository.GetBookForm(id);
+           return Ok(response);
         }
-        [HttpGet]
-        public IActionResult FindTimeline()
-        {
-            var response = _bookRepository.Find();
-            return Ok(response);
-        }
+        //[HttpGet]
+        //public IActionResult FindTimeline()
+        //{
+        //    var response = _bookRepository.Find();
+        //    return Ok(response);
+        //}
     }
 }

@@ -18,10 +18,10 @@ namespace Controllers.Management
             var data = _repository.Find();
             return Ok(data);
         }
-        [HttpGet("{id}")]
-        public IActionResult GetDetail(Guid id){
-            var data = _repository.GetDetailById(id);
-            return Ok(data);
-        }
+        //[HttpGet("{id}")]
+        //public IActionResult GetDetail(Guid id){
+        //    var data = _repository.GetDetailById(id);
+        //    return Ok(data);
+        //}
     }
 }

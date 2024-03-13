@@ -8,8 +8,7 @@ namespace idflApp
     {
         public AutoMapperProfile()
         {
-            CreateMap<CreateBook, BookModel>();
-            CreateMap<FindProjectDto, ProjectModel>();
+             CreateMap<FindProjectDto, ProjectModel>();
         }
     }
 }

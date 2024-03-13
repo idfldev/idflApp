@@ -11,10 +11,10 @@ export const SchedulerData = [
       {
         id: "8b71a8a5-33dd-4fc8-9cpa-b4a584ba3762",
         startDate: new Date("2024-03-13T15:31:24.272Z"),
-        endDate: new Date("2024-03-28T10:28:22.649Z"),
+        endDate: new Date("2024-03-13T10:28:22.649Z"),
         occupancy: 3600,
-        title: "Project A",
-        subtitle: "Subtitle A",
+        title: "SCC | ",
+        subtitle: "Subtitle c",
         description: "array indexing Salad West Account",
         bgColor: "rgb(254,165,33)",
       },

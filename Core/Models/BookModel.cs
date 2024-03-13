@@ -12,7 +12,8 @@ namespace idflApp.Core.Models
         public UserModel? UserModel { get; set; }
         public Guid? ProjectId { get; set; }
         public ProjectModel? ProjectModel { get; set; }
-        public Guid? AuditBy { get; set; }
+        // public Guid? AuditBy { get; set; }
+        public List<BookUserModel>? BookUserModels { get; set; }
         public Guid? CompletedBy { get; set; }
         public bool IsBooked { get; set; }
         public string? CompletedNotes { get; set; }

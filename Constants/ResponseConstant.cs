@@ -4,8 +4,8 @@
     {
         public const string Create = "Created failed!";
         public const string Update = "Updated failed!";
-        public const string ExistBookDate = "Not Available";
-        public const string BookTimeError = "Can not book, because project was booked";
+        public const string BookTimeError = "Auditor was not available";
+        public const string ExistBookDate = "Can not book, because project was booked";
 
         public const string CreateException = "Having error during create data";
 
