@@ -6,7 +6,6 @@ using idflApp.Data;
 using idflApp.Exceptions;
 using idflApp.Services.management.booking.interfaces;
 using Microsoft.EntityFrameworkCore;
-using static idflApp.Core.Dtos.CreateBookRequestDto;
 
 namespace idflApp.Services.management.booking
 {
