@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import { BOOK_URL } from "apis/api-path";
 import { title } from "process";
+import { SelectMultiple } from "./select-multiple";
 
 interface AuditorInferface {
   id: any;
@@ -18,7 +19,7 @@ export const BookCreateForm: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [errorAlert, setErrorAlert] = useState("");
-  const [color, setColor] = useState('')
+  const [color, setColor] = useState("");
   const [client, setClient] = useState("");
   const [standard, setStandard] = useState("");
   const [status, setStatus] = useState("");
@@ -40,14 +41,11 @@ export const BookCreateForm: React.FC = () => {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NzdjZjA4LTRiOTYtNDRjZC1hYTllLTQxNTQwMjFhN2JhZCIsIm5iZiI6MTcxMDIzNDIwNiwiZXhwIjoxNzEwMjM2MDA2LCJpYXQiOjE3MTAyMzQyMDZ9.jxwyUxSAeCaRGL5crhqzkIACwZ0NBJWzjvHelQZ-wjM";
   const getDataFromBook = async () => {
     try {
-      const response = await axios.get(
-        `${BOOK_URL}${id}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await axios.get(`${BOOK_URL}${id}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       // Handle the response data here
       setClient(response.data.client);
       setStandard(response.data.standard);
@@ -63,11 +61,11 @@ export const BookCreateForm: React.FC = () => {
     query === ""
       ? auditors
       : auditors.filter((person: any) =>
-        person.name
-          .toLowerCase()
-          .replace(/\s+/g, "")
-          .includes(query.toLowerCase().replace(/\s+/g, ""))
-      );
+          person.name
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""))
+        );
 
   const handlePurposeChange = (event: any) => {
     setTitle(event.target.value);
@@ -106,11 +104,11 @@ export const BookCreateForm: React.FC = () => {
       projectId: id,
       AuditBy: selected?.id,
       Title: title,
-      SubTitle:title,
+      SubTitle: title,
       StartDate: startDate.startDate,
       EndDate: endDate.endDate,
       Description: description,
-      BgColor: color
+      BgColor: color,
     };
 
     try {
@@ -128,8 +126,8 @@ export const BookCreateForm: React.FC = () => {
     }
   };
   const handlePickColor = (value: any) => {
-    setColor(value)
-  }
+    setColor(value);
+  };
   useEffect(() => {
     getDataFromBook();
 
@@ -140,7 +138,6 @@ export const BookCreateForm: React.FC = () => {
   }, [errorAlert]);
   return (
     <>
-
       <form onSubmit={handleSubmit} className="p-3 pt-20">
         <div className="space-y-0 p-5 m-auto relative w-3/6">
           <div className="pb-0">
@@ -211,9 +208,10 @@ export const BookCreateForm: React.FC = () => {
                               <Combobox.Option
                                 key={person.id}
                                 className={({ active }) =>
-                                  `relative cursor-default select-none py-2 pl-10 pr-4 ${active
-                                    ? "bg-teal-600 text-white"
-                                    : "text-gray-900"
+                                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                    active
+                                      ? "bg-teal-600 text-white"
+                                      : "text-gray-900"
                                   }`
                                 }
                                 value={person}
@@ -221,19 +219,19 @@ export const BookCreateForm: React.FC = () => {
                                 {({ selected, active }) => (
                                   <>
                                     <span
-                                      className={`block truncate ${selected
-                                        ? "font-medium"
-                                        : "font-normal"
-                                        }`}
+                                      className={`block truncate ${
+                                        selected ? "font-medium" : "font-normal"
+                                      }`}
                                     >
                                       {person.name}
                                     </span>
                                     {selected ? (
                                       <span
-                                        className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active
-                                          ? "text-white"
-                                          : "text-teal-600"
-                                          }`}
+                                        className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                                          active
+                                            ? "text-white"
+                                            : "text-teal-600"
+                                        }`}
                                       >
                                         <CheckIcon
                                           className="h-5 w-5"
@@ -286,9 +284,16 @@ export const BookCreateForm: React.FC = () => {
                 </div>
               </div>
               <div className="space-x-2 col-span-6 flex  items-center">
-                <label htmlFor="pick-color" className="font-medium">Pick color</label>
-                <input onChange={(e) => handlePickColor(e.target.value)} type="color"  />
+                <label htmlFor="pick-color" className="font-medium">
+                  Pick color
+                </label>
+                <input
+                  onChange={(e) => handlePickColor(e.target.value)}
+                  type="color"
+                />
               </div>
+              <SelectMultiple />
+
               <div className="col-span-12">
                 <label
                   htmlFor="region"
@@ -324,7 +329,6 @@ export const BookCreateForm: React.FC = () => {
           </div>
         </div>
       </form>
-
     </>
   );
 };
