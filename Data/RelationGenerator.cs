@@ -131,12 +131,11 @@ namespace idflApp.Data
         {
             modelBuilder.Entity<BookUserModel>(entity =>
             {
-                entity.ToTable("dbbookusertable");
-                //entity.HasOne(o => o.UserModel)
-                //.WithMany(f => f.BookUserModels)
-                //.HasConstraintName("fk_book_user_table_user")
-                //.HasForeignKey(k => k.BookId);
-
+                entity.ToTable("dbbookuser");
+                entity.HasOne(o => o.UserModel)
+                .WithMany(f => f.BookUserModels)
+                .HasConstraintName("fk_book_user_table_user")
+                .HasForeignKey(k => k.AuditorId);
                 entity.HasOne(o => o.BookModel)
                 .WithMany(f => f.BookUserModels)
                 .HasConstraintName("fk_book_user_table_book")

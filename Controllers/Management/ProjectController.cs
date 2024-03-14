@@ -1,7 +1,7 @@
 using idflApp.auth;
 using idflApp.Core.Dtos;
 using idflApp.Core.Models;
-using idflApp.Services.management.Projects.Interfaces;
+using idflApp.Core.Models.Interfaces;
 using idflApp.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,18 +18,20 @@ namespace Controllers.Management
             _repositoyProject = repositoyProject;
             _logger = logger;
         }
-        [HttpGet]
-        public async Task<IActionResult> Find()
-        {
 
+        [HttpGet]
+        public async Task<IActionResult> Find([FromQuery] IParams @params)
+        {
+            var pageNumber = 1;
+            var pageSize = 50;
             var projectResult = await _repositoyProject
-                .GetAllAsync(
+                .PaginationGetAllAsync(pageNumber, pageSize,
                 x => x.StandardModel!,
                 x => x.ClientModel!,
                 x => x.BookModels!);
             if (projectResult != null)
             {
-                var project = projectResult.Select(s => new FindProjectDto
+                var project = projectResult.Data.Select(s => new FindProjectDto
                 {
                     Id = s.Id,
                     Standard = s.StandardModel != null ? s.StandardModel.StandardCode + "-" + s.StandardModel!.Name : "",
@@ -53,7 +55,23 @@ namespace Controllers.Management
                     IssueCertificated = s.IssueCertificated,
                     IssueCertificatedDate = s.IssueCertificatedDate.ToString() != null ? s.IssueCertificatedDate.ToString("dd/MMM/yy") : "",
                 }).ToList();
-                return Ok(project);
+                return Ok(new
+                {
+                    Pagination = new IParams
+                    {
+                        PageNumber = projectResult.PageNumber,
+                        PageSize = projectResult.PageSize,
+                        FirstPage = projectResult.FirstPage,
+                        LastPage = projectResult.LastPage,
+                        TotalPages = projectResult.TotalPages,
+                        TotalRecords = projectResult.TotalRecords,
+                        NextPage = projectResult.NextPage,
+                        PreviousPage = projectResult.PreviousPage
+
+                    },
+                    project
+                });
+
             }
             _logger.LogWarning("Find controller-Project not found: ", projectResult);
             return NotFound();

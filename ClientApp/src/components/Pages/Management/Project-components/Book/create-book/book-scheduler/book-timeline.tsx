@@ -2,7 +2,6 @@ import { Scheduler, SchedulerProjectData } from "@bitnoi.se/react-scheduler";
 import { useCallback, useEffect, useState } from "react";
 import "./book-timeline.css"
 import ServiceBook from "services/service-book";
-import { SchedulerData } from "./mock-data";
 interface ParsedDatesRange {
   startDate: Date;
   endDate: Date;

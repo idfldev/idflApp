@@ -8,6 +8,7 @@
         public const string ExistBookDate = "Can not book, because project was booked";
 
         public const string CreateException = "Having error during create data";
+        public const string CreateExceptionTransaction = "Having error during create data with transaction";
 
     }
     public class ResponseSuccessConstant

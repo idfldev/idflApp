@@ -2,12 +2,11 @@ using AutoMapper;
 using idflApp.Core.Dtos;
 using idflApp.Core.Models;
 using idflApp.Data;
-using idflApp.Services.management.Projects.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace idflApp.Services.management.Projects
 {
-    public class ProjectService : IProjectRepository
+    public class ProjectService
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;

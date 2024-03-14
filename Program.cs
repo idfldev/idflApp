@@ -7,9 +7,6 @@ using idflApp.Middlewares;
 using idflApp.Repository;
 using idflApp.Services;
 using idflApp.Services.management.booking;
-using idflApp.Services.management.booking.interfaces;
-using idflApp.Services.management.Projects;
-using idflApp.Services.management.Projects.Interfaces;
 using idflApp.Services.Repositories;
 using idflApp.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -41,12 +38,11 @@ builder.Services.AddAntiforgery(options =>
 });
 builder.Services.AddScoped<IJwtUtilRepository, JwtUtils>();
 builder.Services.AddScoped<IUserRepository, UserService>();
-builder.Services.AddScoped<IBookRepository, BookService>();
-builder.Services.AddScoped<IProjectRepository, ProjectService>();
 builder.Services.AddScoped<IRepository<ProjectModel>, MySqlRepository<ProjectModel>>();
 builder.Services.AddScoped<IRepository<UserModel>, MySqlRepository<UserModel>>();
 builder.Services.AddScoped<IRepository<BookModel>, MySqlRepository<BookModel>>();
 builder.Services.AddScoped<IRepository<BookUserModel>, MySqlRepository<BookUserModel>>();
+builder.Services.AddTransient<BookService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

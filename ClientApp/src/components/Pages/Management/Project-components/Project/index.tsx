@@ -12,7 +12,7 @@ export const ProjectApp: React.FC = () => {
   const getProjectData = async () => {
     try {
       const response = await axios.get("api/management/project");
-      setProject(response.data);
+      setProject(response.data.project);
       setLoading(false);
       console.log(response.data);
     } catch (error) {

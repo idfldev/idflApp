@@ -1,12 +1,16 @@
-﻿using idflApp.Core.Models.Interfaces;
+﻿using AutoMapper;
+using idflApp.Core.Models.Interfaces;
 using idflApp.Data;
+using idflApp.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace idflApp.Services.Repositories
 {
+
     public class MySqlRepository<T> : IRepository<T> where T : BaseInterface
     {
+
         private readonly ApplicationDbContext _context;
         private readonly DbSet<T> _contextSet;
 
@@ -15,6 +19,9 @@ namespace idflApp.Services.Repositories
             _context = context;
             _contextSet = _context.Set<T>();
         }
+
+
+
         public async Task<T> CreateAsync(T entity)
         {
             if (entity != null)
@@ -23,17 +30,18 @@ namespace idflApp.Services.Repositories
                 await _context.SaveChangesAsync();
                 return entity;
             }
-            throw new NotImplementedException();
+            throw new CreateException();
         }
 
-        public async Task<T> CreateRangeAsync(List<T> entity)
+        public async Task<bool> CreateRangeAsync(List<T> entity)
         {
-             if (entity != null)
+            if (entity != null)
             {
-                await _contextSet.AddRangeAsync(entity);
+                await _context.AddRangeAsync(entity);
                 await _context.SaveChangesAsync();
+                return true;
             }
-          throw new ArgumentNullException(nameof(entity), "Entity list cannot be null.");
+            throw new CreateException();
         }
 
         public async Task<T> DeleteAsync(Guid id)
@@ -45,12 +53,13 @@ namespace idflApp.Services.Repositories
                 {
                     _contextSet.Remove(existingEntity);
                     await _context.SaveChangesAsync();
+                    return existingEntity;
                 }
             }
             throw new NotImplementedException();
         }
 
-        public async Task<IReadOnlyCollection<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+        public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _contextSet.AsQueryable();
             foreach (var include in includes)
@@ -58,7 +67,49 @@ namespace idflApp.Services.Repositories
                 query = query.Include(include);
             }
             return await query.ToListAsync();
+
         }
+        public async Task<IParams<IEnumerable<T>>> PaginationGetAllAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _contextSet.AsQueryable();
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            var TotalRecords = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(TotalRecords / (double)pageSize);
+            var data =await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            return new IParams<IEnumerable<T>>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                FirstPage = 1,
+                LastPage = totalPages,
+                TotalPages = totalPages,
+                TotalRecords = TotalRecords,
+                NextPage = pageNumber < totalPages ? pageNumber + 1 : totalPages,
+                PreviousPage = pageNumber > 1 ? pageNumber - 1 : 1,
+                Data = data
+            };
+
+        }
+        public async Task<bool> GetAnyAsync(Guid id, string value)
+        {
+            IQueryable<T> query = _contextSet.AsQueryable();
+            return await _contextSet.AnyAsync(s => EF.Property<Guid>(s, value).Equals(id));
+        }
+        public async Task<IEnumerable<T>> GetAllParamAsync(string propertyName, IEnumerable<Guid> id, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _contextSet.AsQueryable();
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            var data = await query.Where(i => id.Contains(EF.Property<Guid>(i, propertyName))).ToListAsync();
+            return data;
+        }
+
 
         public async Task<T> GetAsync(Guid id, params Expression<Func<T, object>>[] includes)
         {
@@ -93,5 +144,6 @@ namespace idflApp.Services.Repositories
                 throw new Exception("Entity not found for the provided ID.");
             }
         }
+
     }
 }
