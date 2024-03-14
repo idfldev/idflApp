@@ -4,82 +4,82 @@ using idflApp.Data;
 using idflApp.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Xml;
 
 namespace idflApp.Services.Repositories
 {
 
-    public class MySqlRepository<T> : IRepository<T> where T : BaseInterface
+    public class MySqlRepository<TEntity, TResult> : IRepository<TEntity, TResult> where TEntity : BaseInterface
     {
 
         private readonly ApplicationDbContext _context;
-        private readonly DbSet<T> _contextSet;
+        private readonly DbSet<TEntity> _entities;
 
         public MySqlRepository(ApplicationDbContext context)
         {
-            _context = context;
-            _contextSet = _context.Set<T>();
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _entities = _context.Set<TEntity>();
         }
 
 
 
-        public async Task<T> CreateAsync(T entity)
+        public async Task<TEntity> CreateAsync(TEntity entity)
         {
-            if (entity != null)
-            {
-                await _context.AddAsync(entity);
-                await _context.SaveChangesAsync();
-                return entity;
-            }
-            throw new CreateException();
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task<bool> CreateRangeAsync(List<T> entity)
+        public async Task<bool> CreateRangeAsync(List<TEntity> entities)
         {
-            if (entity != null)
-            {
-                await _context.AddRangeAsync(entity);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            throw new CreateException();
+            if (entities == null || entities.Count == 0)
+                throw new ArgumentNullException(nameof(entities));
+            await _entities.AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
+            return true;
+
         }
 
-        public async Task<T> DeleteAsync(Guid id)
+        public async Task<TEntity> DeleteAsync(Guid id)
         {
-            if (id != Guid.Empty)
-            {
-                var existingEntity = await _contextSet.FirstOrDefaultAsync(x => x.Id == id);
-                if (existingEntity != null)
-                {
-                    _contextSet.Remove(existingEntity);
-                    await _context.SaveChangesAsync();
-                    return existingEntity;
-                }
-            }
+            if (id == Guid.Empty)
+                throw new ArgumentException("ID cannot be empty.", nameof(id));
+
+            var entityToDelete = await _entities.FirstOrDefaultAsync(e => e.Id == id);
+            if (entityToDelete == null)
+                throw new Exception($"Entity with ID {id} not found.");
+            _entities.Remove(entityToDelete);
+            await _context.SaveChangesAsync();
+            return entityToDelete;
+
+
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+        public async Task<IEnumerable<TResult>> GetAllAsync(Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<T> query = _contextSet.AsQueryable();
+            IQueryable<TEntity> query = _entities.AsQueryable();
             foreach (var include in includes)
             {
                 query = query.Include(include);
             }
-            return await query.ToListAsync();
+            return await query.Select(selector).ToListAsync();
 
         }
-        public async Task<IParams<IEnumerable<T>>> PaginationGetAllAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] includes)
+        public async Task<IParams<IEnumerable<TResult>>> PaginateAllAsync(int pageNumber, int pageSize, Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<T> query = _contextSet.AsQueryable();
+            IQueryable<TEntity> query = _entities.AsQueryable();
             foreach (var include in includes)
             {
                 query = query.Include(include);
             }
             var TotalRecords = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(TotalRecords / (double)pageSize);
-            var data =await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-            return new IParams<IEnumerable<T>>
+            var data = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(selector).ToListAsync();
+            return new IParams<IEnumerable<TResult>>
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize,
@@ -93,56 +93,48 @@ namespace idflApp.Services.Repositories
             };
 
         }
-        public async Task<bool> GetAnyAsync(Guid id, string value)
+        public async Task<bool> ExistsAsync(Guid id, string propertyName)
         {
-            IQueryable<T> query = _contextSet.AsQueryable();
-            return await _contextSet.AnyAsync(s => EF.Property<Guid>(s, value).Equals(id));
+            if (id == Guid.Empty)
+                throw new ArgumentException("ID cannot be empty.", nameof(id));
+
+            return await _entities.AnyAsync(e => EF.Property<Guid>(e, propertyName) == id);
         }
-        public async Task<IEnumerable<T>> GetAllParamAsync(string propertyName, IEnumerable<Guid> id, params Expression<Func<T, object>>[] includes)
+        public async Task<TResult> GetDetailFilteredAsync(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> filter, params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<T> query = _contextSet.AsQueryable();
+            IQueryable<TEntity> query = _entities.AsQueryable();
 
             foreach (var include in includes)
             {
                 query = query.Include(include);
             }
-            var data = await query.Where(i => id.Contains(EF.Property<Guid>(i, propertyName))).ToListAsync();
-            return data;
+            return await query.Where(filter).Select(selector).FirstOrDefaultAsync();
         }
-
-
-        public async Task<T> GetAsync(Guid id, params Expression<Func<T, object>>[] includes)
+        public async Task<IEnumerable<TEntity>> GetAllByPropertyAsync(string propertyName, IEnumerable<Guid> ids, params Expression<Func<TEntity, object>>[] includes)
         {
-            // Create a query context data
-            IQueryable<T> query = _contextSet.AsQueryable();
+            IQueryable<TEntity> query = _entities.AsQueryable();
+
             foreach (var include in includes)
             {
                 query = query.Include(include);
             }
-            var data = await query.FirstAsync(x => x.Id == id);
+            var data = await query.Where(i => ids.Contains(EF.Property<Guid>(i, propertyName))).ToListAsync();
             return data;
         }
-
-        public async Task<T> UpdateAsync(T dto)
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            if (dto != null)
-            {
-                var existingEntity = await _contextSet.FirstOrDefaultAsync(x => x.Id == dto.Id);
-                if (existingEntity != null)
-                {
-                    _contextSet.Entry(existingEntity).CurrentValues.SetValues(dto);
-                    await _context.SaveChangesAsync();
-                    return existingEntity;
-                }
-                else
-                {
-                    throw new Exception("Entity not found for the provided ID.");
-                }
-            }
-            else
-            {
-                throw new Exception("Entity not found for the provided ID.");
-            }
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            var existingEntity = await _entities.FirstOrDefaultAsync(e => e.Id == entity.Id);
+
+            if (existingEntity == null)
+                throw new Exception($"Entity with ID {entity.Id} not found.");
+
+            _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+            await _context.SaveChangesAsync();
+
+            return existingEntity;
         }
 
     }

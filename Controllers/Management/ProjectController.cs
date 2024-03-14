@@ -12,8 +12,8 @@ namespace Controllers.Management
     public class ProjectController : ControllerBase
     {
         private readonly ILogger<ProjectController> _logger;
-        private readonly IRepository<ProjectModel> _repositoyProject;
-        public ProjectController(IRepository<ProjectModel> repositoyProject, ILogger<ProjectController> logger)
+        private readonly IRepository<ProjectModel, object> _repositoyProject;
+        public ProjectController(IRepository<ProjectModel, object> repositoyProject, ILogger<ProjectController> logger)
         {
             _repositoyProject = repositoyProject;
             _logger = logger;
@@ -22,16 +22,10 @@ namespace Controllers.Management
         [HttpGet]
         public async Task<IActionResult> Find([FromQuery] IParams @params)
         {
-            var pageNumber = 1;
-            var pageSize = 50;
+            var pageNumber = @params.PageNumber;
+            var pageSize = @params.PageSize;
             var projectResult = await _repositoyProject
-                .PaginationGetAllAsync(pageNumber, pageSize,
-                x => x.StandardModel!,
-                x => x.ClientModel!,
-                x => x.BookModels!);
-            if (projectResult != null)
-            {
-                var project = projectResult.Data.Select(s => new FindProjectDto
+                .PaginateAllAsync(pageNumber, pageSize, s => new FindProjectDto
                 {
                     Id = s.Id,
                     Standard = s.StandardModel != null ? s.StandardModel.StandardCode + "-" + s.StandardModel!.Name : "",
@@ -41,36 +35,24 @@ namespace Controllers.Management
                     IsRenewalCertification = s.IsRenewalCertification,
                     IsAnotherCertification = s.IsAnotherCertification,
                     LicenseNo = s.LicenseNo,
-                    Books = s.BookModels != null ? s.BookModels
-               .Select(s => new BookingDto
-               {
-                   Id = s.Id.ToString(),
-                   IsBooked = s.IsBooked,
-                   StartedDate = s.StartDate.ToString("dd/MMM/yy"),
-                   EndedDate = s.EndDate.ToString("dd/MMM/yy")
-               }).ToList() : null,
+                    Books = s.BookModels
+                   .Select(s => new BookingDto
+                   {
+                       Id = s.Id.ToString(),
+                       IsBooked = s.IsBooked,
+                       StartedDate = s.StartDate.ToString("dd/MMM/yy"),
+                       EndedDate = s.EndDate.ToString("dd/MMM/yy")
+                   }).ToList(),
                     CertificationBody = s.CertificationBody != null ? s.CertificationBody : "",
                     CertificationExpirationDate = s.CertificationExpirationDate.ToString("dd/MMM/yy"),
                     Status = s.Status != null ? s.Status.ToString() : "",
                     IssueCertificated = s.IssueCertificated,
                     IssueCertificatedDate = s.IssueCertificatedDate.ToString() != null ? s.IssueCertificatedDate.ToString("dd/MMM/yy") : "",
-                }).ToList();
-                return Ok(new
-                {
-                    Pagination = new IParams
-                    {
-                        PageNumber = projectResult.PageNumber,
-                        PageSize = projectResult.PageSize,
-                        FirstPage = projectResult.FirstPage,
-                        LastPage = projectResult.LastPage,
-                        TotalPages = projectResult.TotalPages,
-                        TotalRecords = projectResult.TotalRecords,
-                        NextPage = projectResult.NextPage,
-                        PreviousPage = projectResult.PreviousPage
+                }, x => x.StandardModel!, x => x.ClientModel!, x => x.BookModels!);
+            if (projectResult != null)
+            {
 
-                    },
-                    project
-                });
+                return Ok(projectResult);
 
             }
             _logger.LogWarning("Find controller-Project not found: ", projectResult);

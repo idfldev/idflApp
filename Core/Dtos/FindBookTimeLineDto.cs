@@ -4,7 +4,7 @@
     {
         public string Id { get; set; }
         public Label Label { get; set; }
-        public List<BookingData> Data { get; set; }
+        public List<BookingData>? Data { get; set; }
     }
     public class Label
     {

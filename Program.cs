@@ -38,10 +38,10 @@ builder.Services.AddAntiforgery(options =>
 });
 builder.Services.AddScoped<IJwtUtilRepository, JwtUtils>();
 builder.Services.AddScoped<IUserRepository, UserService>();
-builder.Services.AddScoped<IRepository<ProjectModel>, MySqlRepository<ProjectModel>>();
-builder.Services.AddScoped<IRepository<UserModel>, MySqlRepository<UserModel>>();
-builder.Services.AddScoped<IRepository<BookModel>, MySqlRepository<BookModel>>();
-builder.Services.AddScoped<IRepository<BookUserModel>, MySqlRepository<BookUserModel>>();
+builder.Services.AddScoped<IRepository<ProjectModel,object>, MySqlRepository<ProjectModel,object>>();
+builder.Services.AddScoped<IRepository<UserModel,object>, MySqlRepository<UserModel,object>>();
+builder.Services.AddScoped<IRepository<BookModel,object>, MySqlRepository<BookModel,object>>();
+builder.Services.AddScoped<IRepository<BookUserModel,object>, MySqlRepository<BookUserModel,object>>();
 builder.Services.AddTransient<BookService>();
 var app = builder.Build();
 

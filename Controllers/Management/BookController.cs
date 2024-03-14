@@ -8,6 +8,7 @@ using idflApp.Data;
 using idflApp.Constants;
 using idflApp.Services.management.booking;
 using idflApp.Core.Models.Interfaces;
+using System.Linq.Expressions;
 
 namespace Controllers.Management
 {
@@ -18,15 +19,15 @@ namespace Controllers.Management
     {
         private readonly BookService _bookService;
         private readonly ILogger<BookController> _logger;
-        private readonly IRepository<ProjectModel> _repositoryProject;
-        private readonly IRepository<BookModel> _repositoryBook;
-        private readonly IRepository<BookUserModel> _repositoryUserBook;
-        private readonly IRepository<UserModel> _repositoryUser;
+        private readonly IRepository<ProjectModel, object> _repositoryProject;
+        private readonly IRepository<BookModel, object> _repositoryBook;
+        private readonly IRepository<BookUserModel, object> _repositoryUserBook;
+        private readonly IRepository<UserModel, object> _repositoryUser;
         private readonly ApplicationDbContext _dbContext;
         public BookController(
-            ILogger<BookController> logger, IRepository<ProjectModel> repositoryProject
-            , IRepository<BookUserModel> repositoryUserBook, IRepository<BookModel> repositoryBook,
-            IRepository<UserModel> repositoryUser, ApplicationDbContext dbContext, BookService bookService)
+            ILogger<BookController> logger, IRepository<ProjectModel, object> repositoryProject
+            , IRepository<BookUserModel, object> repositoryUserBook, IRepository<BookModel, object> repositoryBook,
+            IRepository<UserModel, object> repositoryUser, ApplicationDbContext dbContext, BookService bookService)
         {
             _logger = logger;
             _repositoryProject = repositoryProject;
@@ -56,7 +57,7 @@ namespace Controllers.Management
                                     Message = ResponseErrorConstant.ExistBookDate,
                                 });
                         }
-                        var res = await _repositoryBook.GetAnyAsync(bookRequest.ProjectId, "ProjectId");
+                        var res = await _repositoryBook.ExistsAsync(bookRequest.ProjectId, "ProjectId");
                         if (res)
                         {
                             return BadRequest(new CreateBooKResponseDto
@@ -112,28 +113,25 @@ namespace Controllers.Management
         [HttpGet("{id}")]
         public async Task<IActionResult> GetFormCreate(Guid id)
         {
-            var responseUser = await _repositoryUser.GetAllAsync();
-
-            var response = await _repositoryProject.GetAsync(id, x => x.ClientModel!, x => x.StandardModel!);
-            if (response == null)
+            var Users = await _repositoryUser.GetAllAsync(s => new Auditors
+            {
+                Id = s.Id.ToString(),
+                Name = s.AccountName
+            });
+            Expression<Func<ProjectModel, bool>> filter = p => p.Id == id;
+            var projects = await _repositoryProject.GetDetailFilteredAsync(s => new GetBookFormDto
+            {
+                Id = s.Id.ToString(),
+                Client = s.ClientModel.AccountName,
+                Standard = s.StandardModel.Name,
+                Status = s.Status,
+            }, filter, p => p.StandardModel!, p => p.ClientModel!);
+            if (projects  == null && Users == null)
             {
                 _logger.LogError("Get Form Create");
-                return NotFound(response);
+                return NotFound(projects);
             }
-            var result = new GetBookFormDto
-            {
-                Id = response.Id.ToString(),
-                Client = response.ClientModel != null ? response.ClientModel.AccountName : "",
-                Standard = response.StandardModel != null ? response.StandardModel.Name : "",
-                Status = response.Status,
-                Auditors = responseUser.Select(s => new Auditors
-                {
-                    Id = s.Id.ToString(),
-                    Name = s.AccountName
-                }).ToList(),
-
-            };
-            return Ok(result);
+            return Ok(new { projects, Users });
         }
         //TODO: Update
         //TODO: Remove
@@ -142,44 +140,36 @@ namespace Controllers.Management
         [HttpGet]
         public async Task<IActionResult> GetAllTimeLine()
         {
-            var users = await _repositoryUser.GetAllAsync(x=>x.BookUserModels, x=>x.BookModels);
-            var bookUser = await _repositoryUserBook.GetAllAsync();
-            var userBooks = await _repositoryUserBook.GetAllParamAsync("AuditorId", users.Select(s => s.Id), x => x.BookModel!, x=>x.UserModel);
-            //var result = userBooks.Select(book => new BookingData
-            //{
-            //    Id = book.Id.ToString(),
-            //    Title = book.BookModel!.Title != null ? book.BookModel.Title : "",
-            //    Subtitle = book.BookModel.SubTitle != null ? book.BookModel.SubTitle : "",
-            //    Description = book.BookModel.Description != null ? book.BookModel.Description : "",
-            //    BgColor = book.BookModel.BgColor != null ? book.BookModel.BgColor : "",
-            //    StartDate = book.BookModel.StartDate,
-            //    EndDate = book.BookModel.EndDate,
-            //    Occupancy = book.BookModel.Occupancy
-            //}).ToList();
-            var lables = users.Select(s => new FindBookTimeLineDto
+            try
             {
-                Id = s.Id.ToString(),
-                Label = new Label
+                var users = await _repositoryUser.GetAllAsync(s => new FindBookTimeLineDto
                 {
-                    Icon = s.Icon != null ? s.Icon : "",
-                    Title = s.AccountName != null ? s.AccountName : "",
-                    Subtitle = s.Title
-                },
-                Data = bookUser.Where(b=>b.AuditorId == s.Id).Select(book => new BookingData
-                {
-                    Id = book.Id.ToString(),
-                    Title = book.BookModel!.Title != null ? book.BookModel.Title : "",
-                    Subtitle = book.BookModel.SubTitle != null ? book.BookModel.SubTitle : "",
-                    Description = book.BookModel.Description != null ? book.BookModel.Description : "",
-                    BgColor = book.BookModel.BgColor != null ? book.BookModel.BgColor : "",
-                    StartDate = book.BookModel.StartDate,
-                    EndDate = book.BookModel.EndDate,
-                    Occupancy = book.BookModel.Occupancy
-                }).ToList()
-            }).ToList();
-            
-
-            return Ok(lables);
+                    Id = s.Id.ToString(),
+                    Label = new Label
+                    {
+                        Icon = s.Icon != null ? s.Icon : "",
+                        Title = s.Title != null ? s.Title : "",
+                        Subtitle = s.Title != null ? s.Title : "",
+                    },
+                    Data = s.BookUserModels!.Select(book => new BookingData
+                    {
+                        Id = book.Id.ToString(),
+                        Title = book.BookModel!.Title ?? "",
+                        Subtitle = book.BookModel.SubTitle ?? "",
+                        Description = book.BookModel.Description ?? "",
+                        BgColor = book.BookModel.BgColor ?? "",
+                        StartDate = book.BookModel.StartDate,
+                        EndDate = book.BookModel.EndDate,
+                        Occupancy = book.BookModel.Occupancy ?? 0
+                    }).ToList(),
+                }, x => x.BookUserModels!);
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
+
     }
 }
