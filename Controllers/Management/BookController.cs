@@ -126,7 +126,7 @@ namespace Controllers.Management
                 Standard = s.StandardModel.Name,
                 Status = s.Status,
             }, filter, p => p.StandardModel!, p => p.ClientModel!);
-            if (projects  == null && Users == null)
+            if (projects == null && Users == null)
             {
                 _logger.LogError("Get Form Create");
                 return NotFound(projects);
@@ -134,8 +134,32 @@ namespace Controllers.Management
             return Ok(new { projects, Users });
         }
         //TODO: Update
-        //TODO: Remove
-        //TODO: Get Detail
+        public async Task<IActionResult> Update()
+        {
+            return Ok();
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(Guid id)
+        {
+            var response = await _repositoryBook.DeleteAsync(id);
+            return Ok(response);
+        }
+        public async Task<IActionResult> GetDetail(Guid id)
+        {
+             var user = HttpContext.Items["User"] as UserModel;
+            Expression<Func<BookModel, bool>> filter = p => p.Id == id;
+            var result = _repositoryBook.GetDetailFilteredAsync(s=>  new UpdateBookRequestDto{
+                Id = id.ToString(),
+                UserId = user.Id.ToString(),
+                ProjectId = s.ProjectId.ToString(),
+                Title = s.Title,
+                UserBookRequest = s.BookUserModels.Select(m=> new UpdateUserBookRequestDto{
+                    AuditorId = m.AuditorId.ToString(),
+                    BookId = m.BookId.ToString()
+                }).ToList()
+            },filter, c=> c.ProjectModel);
+            return Ok();
+        }
         //TODO: Time line
         [HttpGet]
         public async Task<IActionResult> GetAllTimeLine()

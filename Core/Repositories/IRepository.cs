@@ -13,22 +13,8 @@ namespace idflApp.Services.Repositories
         public int TotalRecords { get; set; }
         public int NextPage { get; set; }
         public int PreviousPage { get; set; }
-        public T Data { get; set; } // Add this property to hold the paginated data
+        public T Data { get; set; }
     }
-
-    // public interface IRepository<T, TResult> where T : BaseInterface
-    // {
-    //     Task<T> CreateAsync(T entity);
-    //     Task<bool> CreateRangeAsync(List<T> entity);
-    //     Task<IParams<IEnumerable<TResult>>> PaginationGetAllAsync(int pageNumber, int pageSize, Expression<Func<T, TResult>> selector, params Expression<Func<T, object>>[] includes);
-    //     Task<IEnumerable<TResult>> GetAllAsync(Expression<Func<T, TResult>> selector, params Expression<Func<T, object>>[] includes);
-    //     Task<T> UpdateAsync(T entity);
-    //     Task<T> DeleteAsync(Guid id);
-    //     Task<bool> GetAnyAsync(Guid id, string value);
-    //     Task<IEnumerable<T>> GetAllParamAsync(string propertyName, IEnumerable<Guid> id, params Expression<Func<T, object>>[] includes);
-    //     ///
-    //     Task<TResult> GetDetailFilterAsync(Expression<Func<T, TResult>> selector, Expression<Func<T, bool>> filter, params Expression<Func<T, object>>[] includes);
-    // }
     public interface IRepository<TEntity, TResult> where TEntity : BaseInterface
     {
         Task<TEntity> CreateAsync(TEntity entity);

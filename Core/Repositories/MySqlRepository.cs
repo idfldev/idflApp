@@ -20,9 +20,6 @@ namespace idflApp.Services.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _entities = _context.Set<TEntity>();
         }
-
-
-
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
             if (entity == null)
