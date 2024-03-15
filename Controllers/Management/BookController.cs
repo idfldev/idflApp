@@ -7,7 +7,6 @@ using idflApp.Services.Repositories;
 using idflApp.Data;
 using idflApp.Constants;
 using idflApp.Services.management.booking;
-using idflApp.Core.Models.Interfaces;
 using System.Linq.Expressions;
 
 namespace Controllers.Management

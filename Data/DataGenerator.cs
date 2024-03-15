@@ -1,6 +1,4 @@
-﻿using System;
-using Core.Models;
-using idflApp.Constants;
+﻿using idflApp.Constants;
 using idflApp.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,60 +8,55 @@ namespace idflApp.Data
     {
         public static void Run(ModelBuilder modelBuilder)
         {
+            var department_cs = new DepartmentModel
+            {
+                Id = Guid.NewGuid(),
+                DepartmentName = "CS department",
+                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+                Status = true,
+                CreatedAt = DateTime.Now,
+            };
+            var department_audit = new DepartmentModel
+            {
+                Id = Guid.NewGuid(),
+                DepartmentName = "Audit department",
+                Description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book",
+                Status = true,
+                CreatedAt = DateTime.Now,
+            };
+            modelBuilder
+            .Entity<DepartmentModel>()
+            .HasData(new List<DepartmentModel>
+            {
+                department_cs,   department_audit
+            });
             var account_1 = new UserModel
             {
                 Id = Guid.NewGuid(),
-                AccountName = "Pham Anh Doan",
-                Title = "Developer",
-                Email = "test_1@gmail.com",
-                Phone = "123587777",
-                Icon = "https://picsum.photos/24",
-                Roles = Constants.Role.management,
+                DisplayName = "Pham Anh Doan",
+                UserCode = "user001",
+                UserRole = Constants.Role.management,
                 Password = Utils.HashPasswordUtils.EncryptCode("1234"),
                 CreatedAt = DateTime.Now,
                 IsActive = true,
-                ActiveDateAt = DateTime.Now,
                 IsVerified = true,
-                VerifiedDateAt = DateTime.Now
+                Status = true,
+                DepartmentId = department_cs.Id,
             };
             var account_2 = new UserModel
             {
                 Id = Guid.NewGuid(),
-                AccountName = "Pham Anh Teo",
-                Title = "Auditor",
-                Email = "test_2@gmail.com",
-                Phone = "123587777",
-                Roles = Constants.Role.staff,
-                Icon = "https://picsum.photos/24",
+                DisplayName = "Nguyên Canh Chan",
+                UserCode = "user002",
+                UserRole = Constants.Role.management,
                 Password = Utils.HashPasswordUtils.EncryptCode("1234"),
                 CreatedAt = DateTime.Now,
                 IsActive = true,
-                ActiveDateAt = DateTime.Now,
                 IsVerified = true,
-                VerifiedDateAt = DateTime.Now
+                Status = true,
+                DepartmentId = department_cs.Id,
             };
-            var account_3 = new UserModel
-            {
-                Id = Guid.NewGuid(),
-                AccountName = "Tran thanh sang",
-                Title = "Auditor Supervisor",
-                Email = "test_3@gmail.com",
-                Phone = "123587777",
-                Icon = "https://picsum.photos/24",
-                Roles = Constants.Role.staff,
-                Password = Utils.HashPasswordUtils.EncryptCode("1234"),
-                CreatedAt = DateTime.Now,
-                IsActive = true,
-                ActiveDateAt = DateTime.Now,
-                IsVerified = true,
-                VerifiedDateAt = DateTime.Now
-            };
-            modelBuilder
-            .Entity<UserModel>()
-            .HasData(new List<UserModel>
-            {
-                    account_1, account_2,account_3
-            });
+
 
             var client_1 = new ClientModel
             {

@@ -8,12 +8,11 @@ namespace idflApp.Core.Models
         public string? SubTitle { get; set; }
         public int? Occupancy { get; set; }
         public string? BgColor { get; set; }
-        public Guid UserId { get; set; }
-        public UserModel? UserModel { get; set; }
-        public Guid? ProjectId { get; set; }
-        public ProjectModel? ProjectModel { get; set; }
+        public Guid? FactoryId { get; set; }
+        public FactoryModel? FactoryModel { get; set; }
         // public Guid? AuditBy { get; set; }
         public List<BookUserModel>? BookUserModels { get; set; }
+        public List<BookCompleteModel>? BookCompleteModels { get; set; }
         public Guid? CompletedBy { get; set; }
         public bool IsBooked { get; set; }
         public string? CompletedNotes { get; set; }
