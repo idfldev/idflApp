@@ -4,7 +4,7 @@
     {
         public string Id { get; set; }
         public Label Label { get; set; }
-        public List<BookingData> Data { get; set; }
+        public List<BookingData>? Data { get; set; }
     }
     public class Label
     {
@@ -23,6 +23,7 @@
         public string Subtitle { get; set; }
         public string? Description { get; set; }
         public string? BgColor { get; set; }
+        
     }
 
 }

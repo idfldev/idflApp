@@ -13,7 +13,7 @@ const BookTimeSchedule: React.FC = () => {
     startDate: new Date(),
     endDate: new Date(),
   });
-  useEffect(() => { }, []);
+  const [filterButtonState, setFilterButtonState] = useState(0);
   const handleRangeChange = useCallback((range: ParsedDatesRange) => {
     setRange(range);
   }, []);
@@ -28,6 +28,14 @@ const BookTimeSchedule: React.FC = () => {
           isLoading={false}
           onRangeChange={handleRangeChange}
           onTileClick={handleTitleClick}
+          onFilterData={() => {
+            // Some filtering logic...
+            setFilterButtonState(1);
+          }}
+          onClearFilterData={() => {
+            // Some clearing filters logic...
+            setFilterButtonState(0)
+          }}
           onItemClick={(data) =>
             alert(
               "Item was click" +
@@ -39,6 +47,7 @@ const BookTimeSchedule: React.FC = () => {
           }
           config={{
             zoom: 1,
+            lang: "en",
             maxRecordsPerPage: 10,
             filterButtonState: -1,
             includeTakenHoursOnWeekendsInDayView: true,

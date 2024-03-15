@@ -17,6 +17,7 @@ namespace idflApp.Data
             GenerateStandardRelation(modelBuilder);
             GenerateStandardAnswerRelation(modelBuilder);
             GenerateStandardQuestionRelation(modelBuilder);
+            GenerateBookUserRelation(modelBuilder);
         }
         private static void GenerateUserRelation(ModelBuilder modelBuilder)
         {
@@ -93,16 +94,14 @@ namespace idflApp.Data
             {
                 entity.ToTable("dbbooking");
                 entity.HasOne(o => o.ProjectModel)
-                .WithMany(o => o.BookModels).HasForeignKey(k => k.ProjectId);
+                .WithMany(o => o.BookModels).HasForeignKey(k => k.ProjectId)
+                .OnDelete(DeleteBehavior.NoAction);
                 entity.HasOne(o => o.UserModel)
                 .WithMany(s => s.BookModels)
-                .HasForeignKey(f => f.UserId).OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne(o => o.UserModel)
-             .WithMany(s => s.BookModels)
-             .HasForeignKey(f => f.AuditBy).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(f => f.UserId).OnDelete(DeleteBehavior.NoAction);
                 entity.HasOne(o => o.UserModel)
             .WithMany(s => s.BookModels)
-            .HasForeignKey(f => f.CompletedBy).OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(f => f.CompletedBy).OnDelete(DeleteBehavior.NoAction);
             });
         }
         private static void GenerateStandardAnswerRelation(ModelBuilder modelBuilder)
@@ -128,6 +127,20 @@ namespace idflApp.Data
                 .HasConstraintName("fk_standard_question_standard");
             });
         }
-
+        private static void GenerateBookUserRelation(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BookUserModel>(entity =>
+            {
+                entity.ToTable("dbbookuser");
+                entity.HasOne(o => o.UserModel)
+                .WithMany(f => f.BookUserModels)
+                .HasConstraintName("fk_book_user_table_user")
+                .HasForeignKey(k => k.AuditorId);
+                entity.HasOne(o => o.BookModel)
+                .WithMany(f => f.BookUserModels)
+                .HasConstraintName("fk_book_user_table_book")
+                .HasForeignKey(k => k.BookId);
+            });
+        }
     }
 }

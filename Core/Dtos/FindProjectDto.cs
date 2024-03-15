@@ -1,3 +1,5 @@
+using idflApp.Core.Models.Interfaces;
+
 namespace idflApp.Core.Dtos
 {
     public class FindProjectDto

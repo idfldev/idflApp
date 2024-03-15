@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import { BOOK_URL } from "apis/api-path";
 import { title } from "process";
 import { SelectMultiple } from "./select-multiple";
+import { FetchToken } from "hooks/fetch-token";
 
 interface AuditorInferface {
   id: any;
@@ -37,13 +38,12 @@ export const BookCreateForm: React.FC = () => {
   const [selected, setSelected] = useState(auditors[0]);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  var token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NzdjZjA4LTRiOTYtNDRjZC1hYTllLTQxNTQwMjFhN2JhZCIsIm5iZiI6MTcxMDIzNDIwNiwiZXhwIjoxNzEwMjM2MDA2LCJpYXQiOjE3MTAyMzQyMDZ9.jxwyUxSAeCaRGL5crhqzkIACwZ0NBJWzjvHelQZ-wjM";
+
   const getDataFromBook = async () => {
     try {
       const response = await axios.get(`${BOOK_URL}${id}`, {
         headers: {
-          Authorization: token,
+          Authorization: FetchToken,
         },
       });
       // Handle the response data here
@@ -114,7 +114,7 @@ export const BookCreateForm: React.FC = () => {
     try {
       const response = await axios.post("api/management/book", formData, {
         headers: {
-          Authorization: token,
+          Authorization: FetchToken,
         },
       });
       // window.location.reload();
@@ -292,7 +292,7 @@ export const BookCreateForm: React.FC = () => {
                   type="color"
                 />
               </div>
-              <SelectMultiple />
+              <SelectMultiple auditors={auditors}/>
 
               <div className="col-span-12">
                 <label

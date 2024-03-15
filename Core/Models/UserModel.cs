@@ -21,5 +21,7 @@ namespace idflApp.Core.Models
         public DateTime? VerifiedDateAt { get; set; }
         public DateTime? DeletedDateAt { get; set; }
         public List<ProjectModel>? ProjectModels { get; set; }
+        public List<BookUserModel>? BookUserModels { get; set; }
+
     }
 }

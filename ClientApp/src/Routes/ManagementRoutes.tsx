@@ -1,7 +1,7 @@
 import { ProjectApp } from "components/Pages/Management/Project-components/Project";
 import BookCreateForm from "components/Pages/Management/Project-components/Book/create-book/book-create-form";
 import { ProjectDetailApp } from "components/Pages/Management/Project-components/Project/project-detail";
-import BookTimeSchedule from "components/Pages/Management/Project-components/Book/book-scheduler/book-timeline";
+import BookTimeSchedule from "components/Pages/Management/Project-components/Book/create-book/book-scheduler/book-timeline";
 export const ManagementRoutes = [
     {
       path: "/",

@@ -1,14 +1,13 @@
 using System.Text.Json.Serialization;
 using idflApp.Constants;
 using idflApp.Core.Dtos;
+using idflApp.Core.Models;
 using idflApp.Data;
 using idflApp.Middlewares;
 using idflApp.Repository;
 using idflApp.Services;
 using idflApp.Services.management.booking;
-using idflApp.Services.management.booking.interfaces;
-using idflApp.Services.management.Projects;
-using idflApp.Services.management.Projects.Interfaces;
+using idflApp.Services.Repositories;
 using idflApp.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -39,8 +38,11 @@ builder.Services.AddAntiforgery(options =>
 });
 builder.Services.AddScoped<IJwtUtilRepository, JwtUtils>();
 builder.Services.AddScoped<IUserRepository, UserService>();
-builder.Services.AddScoped<IBookRepository, BookService>();
-builder.Services.AddScoped<IProjectRepository, ProjectService>();
+builder.Services.AddScoped<IRepository<ProjectModel,object>, MySqlRepository<ProjectModel,object>>();
+builder.Services.AddScoped<IRepository<UserModel,object>, MySqlRepository<UserModel,object>>();
+builder.Services.AddScoped<IRepository<BookModel,object>, MySqlRepository<BookModel,object>>();
+builder.Services.AddScoped<IRepository<BookUserModel,object>, MySqlRepository<BookUserModel,object>>();
+builder.Services.AddTransient<BookService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
