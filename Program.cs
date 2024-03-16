@@ -42,6 +42,7 @@ builder.Services.AddScoped<IRepository<ProjectModel,object>, MySqlRepository<Pro
 builder.Services.AddScoped<IRepository<UserModel,object>, MySqlRepository<UserModel,object>>();
 builder.Services.AddScoped<IRepository<BookModel,object>, MySqlRepository<BookModel,object>>();
 builder.Services.AddScoped<IRepository<BookUserModel,object>, MySqlRepository<BookUserModel,object>>();
+builder.Services.AddScoped<IRepository<UserInformationModel, object>,  MySqlRepository<UserInformationModel,object>>();
 builder.Services.AddTransient<BookService>();
 var app = builder.Build();
 

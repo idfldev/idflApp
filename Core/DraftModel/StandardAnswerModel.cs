@@ -1,6 +1,7 @@
-﻿using idflApp.Core.Models.Interfaces;
+﻿using idflApp.Core.Models;
+using idflApp.Core.Models.Interfaces;
 
-namespace idflApp.Core.Models
+namespace idflApp.Core.DraftModel
 {
     public class StandardAnswerModel : BaseInterface
     {

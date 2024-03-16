@@ -20,30 +20,10 @@ namespace idflApp.Services.management.Projects
             var projects = _context.Project
                 .Include(c => c.StandardModel)
                 .Include(c => c.ClientModel)
-                .Include(c => c.BookModels)
                 .Select(s => new FindProjectDto
                 {
                     Id = s.Id,
-                    Standard = s.StandardModel != null ? s.StandardModel.StandardCode + "-" + s.StandardModel!.Name : "",
-                    IdflCode = s.IdflCode != null ? s.IdflCode : "",
-                    Client = s.ClientModel != null ? s.ClientModel!.AccountName : "",
-                    IsInitialCertification = s.IsInitialCertification,
-                    IsRenewalCertification = s.IsRenewalCertification,
-                    IsAnotherCertification = s.IsAnotherCertification,
-                    LicenseNo = s.LicenseNo,
-                    Books = s.BookModels != null ? s.BookModels
-                    .Select(s => new BookingDto
-                    {
-                        Id = s.Id.ToString(),
-                        IsBooked = s.IsBooked,
-                        StartedDate = s.StartDate.ToString("dd/MMM/yy"),
-                        EndedDate = s.EndDate.ToString("dd/MMM/yy")
-                    }).ToList() : null,
-                    CertificationBody = s.CertificationBody != null ? s.CertificationBody : "",
-                    CertificationExpirationDate = s.CertificationExpirationDate.ToString("dd/MMM/yy"),
-                    Status = s.Status != null ? s.Status.ToString() : "",
-                    IssueCertificated = s.IssueCertificated,
-                    IssueCertificatedDate = s.IssueCertificatedDate.ToString() != null ? s.IssueCertificatedDate.ToString("dd/MMM/yy") : "",
+                    
                 }).ToList();
 
             return projects;

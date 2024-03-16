@@ -1,7 +1,7 @@
 ﻿using idflApp.Core.Models.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace idflApp.Core.Models
+namespace idflApp.Core.DraftModel
 {
     public class ProjectStandardCategoryModel : ContentModel
     {

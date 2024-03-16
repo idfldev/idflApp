@@ -1,9 +1,10 @@
-﻿using idflApp.Core.Models.Interfaces;
+﻿using idflApp.Core.Models;
+using idflApp.Core.Models.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace idflApp.Core.Models
+namespace idflApp.Core.DraftModel
 {
-    public class ProjectGeneralModel:BaseInterface
+    public class ProjectGeneralModel : BaseInterface
     {
         public Guid ProjectId { get; set; }
         public ProjectModel? ProjectModel { get; set; }

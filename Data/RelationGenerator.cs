@@ -1,4 +1,3 @@
-using Core.Models;
 using idflApp.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,19 +10,21 @@ namespace idflApp.Data
             GenerateUserRelation(modelBuilder);
             GenerateClientRelation(modelBuilder);
             GenerateProjectRelation(modelBuilder);
-            GenerateProjectGeneralRelation(modelBuilder);
-            GenerateProjectStandardRelation(modelBuilder);
             GenerateBookingRelation(modelBuilder);
             GenerateStandardRelation(modelBuilder);
-            GenerateStandardAnswerRelation(modelBuilder);
-            GenerateStandardQuestionRelation(modelBuilder);
             GenerateBookUserRelation(modelBuilder);
+            GenerateFactoryRelation(modelBuilder);
+            GenerateBookCompletedRelation(modelBuilder);
+            GenerateAccountVerifyRelation(modelBuilder);
+            GenerateUserInformationRelation(modelBuilder);
+            GenerateClientInformationRelation(modelBuilder);
         }
         private static void GenerateUserRelation(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>(entity =>
             {
                 entity.ToTable("dbuser");
+                entity.HasOne(o => o.DepartmentModel).WithMany(w => w.UserModels).HasForeignKey(o => o.DepartmentId);
 
             });
         }
@@ -46,87 +47,94 @@ namespace idflApp.Data
             modelBuilder.Entity<ProjectModel>(entity =>
             {
                 entity.ToTable("dbproject");
-                entity.HasIndex(i => i.IdflCode).IsUnique();
+                entity.HasIndex(i => i.RefCode).IsUnique();
+
+                // Project-Client Relationship
                 entity.HasOne(o => o.ClientModel)
-                .WithMany(s => s.ProjectModels)
-                .HasForeignKey(o => o.ClientId)
-                .HasConstraintName("fk_project_client");
+                    .WithMany(s => s.ProjectModels)
+                    .HasForeignKey(o => o.ClientId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // Project-Standard Relationship
                 entity.HasOne(o => o.StandardModel)
-                 .WithMany(s => s.ProjectModels)
-                 .HasForeignKey(o => o.StandardId)
-                 .HasConstraintName("fk_project_standard");
+                    .WithMany(s => s.ProjectModels)
+                    .HasForeignKey(o => o.StandardId);
+
+                // Project-User Relationship
                 entity.HasOne(o => o.UserModel)
-               .WithMany(s => s.ProjectModels)
-               .HasForeignKey(o => o.HandledBy)
-               .HasConstraintName("fk_project_user");
+                    .WithMany(s => s.ProjectModels)
+                    .HasForeignKey(o => o.UserId);
             });
         }
-        private static void GenerateProjectGeneralRelation(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<ProjectGeneralModel>(entity =>
-            {
-                entity.ToTable("dbprojectgeneral");
-                entity.HasOne(o => o.ProjectModel)
-                .WithOne(m => m.ProjectGeneralModel)
-                .HasForeignKey<ProjectGeneralModel>(f => f.ProjectId)
-                .HasConstraintName("fk_project_general_project");
-            });
-        }
-        private static void GenerateProjectStandardRelation(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<ProjectStandardModel>(entity =>
-            {
-                entity.ToTable("dbprojectstandard");
-                entity.HasOne(o => o.ProjectModel)
-                .WithMany(m => m.ProjectStandardModels)
-                .HasForeignKey(f => f.ProjectId)
-                .HasConstraintName("fk_project_standard_project");
-                entity.HasOne(o => o.ProjectStandardCategory)
-                .WithMany(m => m.ProjectStandardModels)
-                .HasForeignKey(f => f.ProjectStandardCategoryId)
-                .HasConstraintName("fk_project_standard_project_standard_category");
-            });
-        }
+        //private static void GenerateProjectGeneralRelation(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<ProjectGeneralModel>(entity =>
+        //    {
+        //        entity.ToTable("dbprojectgeneral");
+        //        entity.HasOne(o => o.ProjectModel)
+        //        .WithOne(m => m.ProjectGeneralModel)
+        //        .HasForeignKey<ProjectGeneralModel>(f => f.ProjectId)
+        //        .HasConstraintName("fk_project_general_project");
+        //    });
+        //}
+        //private static void GenerateProjectStandardRelation(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<ProjectStandardModel>(entity =>
+        //    {
+        //        entity.ToTable("dbprojectstandard");
+        //        entity.HasOne(o => o.ProjectModel)
+        //        .WithMany(m => m.ProjectStandardModels)
+        //        .HasForeignKey(f => f.ProjectId)
+        //        .HasConstraintName("fk_project_standard_project");
+        //        entity.HasOne(o => o.ProjectStandardCategory)
+        //        .WithMany(m => m.ProjectStandardModels)
+        //        .HasForeignKey(f => f.ProjectStandardCategoryId)
+        //        .HasConstraintName("fk_project_standard_project_standard_category");
+        //    });
+        //}
 
         private static void GenerateBookingRelation(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BookModel>(entity =>
             {
                 entity.ToTable("dbbooking");
-                entity.HasOne(o => o.ProjectModel)
-                .WithMany(o => o.BookModels).HasForeignKey(k => k.ProjectId)
-                .OnDelete(DeleteBehavior.NoAction);
-                entity.HasOne(o => o.UserModel)
-                .WithMany(s => s.BookModels)
-                .HasForeignKey(f => f.UserId).OnDelete(DeleteBehavior.NoAction);
-                entity.HasOne(o => o.UserModel)
-            .WithMany(s => s.BookModels)
-            .HasForeignKey(f => f.CompletedBy).OnDelete(DeleteBehavior.NoAction);
+                entity.HasOne(o => o.FactoryModel)
+                .WithMany(o => o.BookModels).HasForeignKey(k => k.FactoryId);
+                entity.HasOne(o => o.FactoryModel);
             });
         }
-        private static void GenerateStandardAnswerRelation(ModelBuilder modelBuilder)
+        private static void GenerateFactoryRelation(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StandardAnswerModel>(entity =>
+            modelBuilder.Entity<FactoryModel>(entity =>
             {
-                entity.ToTable("dbstandardanswer");
+                entity.ToTable("dbfactory");
                 entity.HasOne(o => o.ProjectModel)
-                .WithMany(s => s.StandardAnswerModels)
-                .HasForeignKey(k => k.ProjectId)
-                .HasConstraintName("fk_standard_answer_project");
+                .WithMany(o => o.FactoryModels).HasForeignKey(k => k.ProjectId);
+            });
+        }
+        //private static void GenerateStandardAnswerRelation(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<StandardAnswerModel>(entity =>
+        //    {
+        //        entity.ToTable("dbstandardanswer");
+        //        entity.HasOne(o => o.ProjectModel)
+        //        .WithMany(s => s.StandardAnswerModels)
+        //        .HasForeignKey(k => k.ProjectId)
+        //        .HasConstraintName("fk_standard_answer_project");
 
-            });
-        }
-        private static void GenerateStandardQuestionRelation(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<StandardQuestionModel>(entity =>
-            {
-                entity.ToTable("dbstandardquestion");
-                entity.HasOne(o => o.StandardModel)
-                .WithMany(m => m.StandardQuestionModels)
-                .HasForeignKey(k => k.StandardId)
-                .HasConstraintName("fk_standard_question_standard");
-            });
-        }
+        //    });
+        //}
+        //private static void GenerateStandardQuestionRelation(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<StandardQuestionModel>(entity =>
+        //    {
+        //        entity.ToTable("dbstandardquestion");
+        //        entity.HasOne(o => o.StandardModel)
+        //        .WithMany(m => m.StandardQuestionModels)
+        //        .HasForeignKey(k => k.StandardId)
+        //        .HasConstraintName("fk_standard_question_standard");
+        //    });
+        //}
         private static void GenerateBookUserRelation(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<BookUserModel>(entity =>
@@ -140,6 +148,50 @@ namespace idflApp.Data
                 .WithMany(f => f.BookUserModels)
                 .HasConstraintName("fk_book_user_table_book")
                 .HasForeignKey(k => k.BookId);
+            });
+        }
+        public static void GenerateBookCompletedRelation(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BookCompleteModel>(entity =>
+            {
+                entity.ToTable("dbbookcomplete");
+                entity.HasOne(o => o.BookModel).WithMany(w => w.BookCompleteModels);
+                entity.HasOne(o => o.UserModel).WithMany(w => w.BookCompleteModels);
+            });
+        }
+
+        public static void GenerateAccountVerifyRelation(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AccountVerifyModel>(entity =>
+            {
+                entity.ToTable("dbaccountverify");
+                entity.HasOne(o => o.UserModel).WithMany(w => w.AccountVerifyModels);
+                entity.HasOne(o => o.ClientModel).WithMany(w => w.AccountVerifyModels);
+            });
+        }
+
+        public static void GenerateUserInformationRelation(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserInformationModel>(entity =>
+            {
+                entity.ToTable("dbuserinformation");
+                entity.HasOne(o => o.UserModel).WithMany(o => o.UserInformationModels).HasForeignKey(k => k.UserId);
+            });
+        }
+
+        public static void GenerateClientInformationRelation(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ClientInfomationModel>(entity =>
+            {
+                entity.ToTable("dbclientinformation");
+                entity.HasOne(o => o.ClientModel).WithMany(o => o.ClientInfomationModels).HasForeignKey(k => k.ClientId);
+            });
+        }
+        public static void GenerateDepartmentRelation(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DepartmentModel>(entity =>
+            {
+                entity.ToTable("dbdepartment");
             });
         }
     }

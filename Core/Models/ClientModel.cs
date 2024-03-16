@@ -1,32 +1,25 @@
 using System.Text.Json.Serialization;
 using Core.Models.Intefaces;
 using idflApp.Constants;
-using idflApp.Core.Models;
+using idflApp.Core.Models.Interfaces;
 
-namespace Core.Models
+namespace idflApp.Core.Models
 {
-    public class ClientModel : AccountModel
+    public class ClientModel : BaseInterface
     {
-        public int AccountNumber { get; set; }
-        public ClientRole AccountRole { get; set; }
-        public string CompanyName { get; set; }
-        public string BusinessLicenseFile { get; set; }
-        public string? TaxNumber { get; set; }
-        public string Representator { get; set; }
-        public string? RepresentatorTitle { get; set; }
-        public string IDCardNumber { get; set; }
-        public string ContactPerson { get; set; }
+        public string? DisplayName { get; set; }
+        public int ClientCode { get; set; }
+        public string? Email { get; set; }
+
+        public ClientRole ClientRole { get; set; }
         public bool IsThirdParty { get; set; }
-        public string? Website { get; set; }
-        public string? FaxNumber { get; set; }
         [JsonIgnore]
-        public string Password { get; set; }
-        public bool IsActive { get; set; }
+        public required string Password { get; set; }
         public bool IsVerified { get; set; }
-        public bool IsDeleted { get; set; }
-        public DateTime? ActiveAt { get; set; }
-        public DateTime? VerifiedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
-        public List<ProjectModel>? ProjectModels { get; set; }
+        public bool IsActive { get; set; }
+        public string? Status { get; set; }
+        public List<ProjectModel> ProjectModels { get; set; }
+        public List<ClientInfomationModel> ClientInfomationModels { get; set; }
+        public List<AccountVerifyModel> AccountVerifyModels { get; set; }
     }
 }

@@ -8,11 +8,6 @@ namespace idflApp.Core.Dtos
         public string? IdflCode { get; set; }
         public string? Standard { get; set; }
         public string? Client { get; set; }
-        public List<BookingDto>? Books { get; set; }
-        public bool IsInitialCertification { get; set; }
-        public bool IsRenewalCertification { get; set; }
-        public bool IsAnotherCertification { get; set; }
-        public string? LicenseNo { get; set; }
         public string? CertificationBody { get; set; }
         public string? CertificationExpirationDate { get; set; }
         public string? Status { get; set; }
