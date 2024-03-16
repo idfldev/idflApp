@@ -1,7 +1,9 @@
+using System.Linq.Expressions;
 using idflApp.auth;
 using idflApp.Core.Dtos;
 using idflApp.Core.Models;
 using idflApp.Core.Models.Interfaces;
+using idflApp.Core.Resutls;
 using idflApp.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,30 +27,22 @@ namespace Controllers.Management
             var pageNumber = @params.PageNumber;
             var pageSize = @params.PageSize;
             var projectResult = await _repositoyProject
-                .PaginateAllAsync(pageNumber, pageSize, s => new FindProjectDto
+                .PaginateAllAsync(pageNumber, pageSize, s => new GetAllProjectResult
                 {
-                    Id = s.Id,
-                    Standard = s.StandardModel != null ? s.StandardModel.StandardCode + "-" + s.StandardModel!.Name : "",
-                    IdflCode = s.IdflCode != null ? s.IdflCode : "",
-                    Client = s.ClientModel != null ? s.ClientModel!.AccountName : "",
-                    IsInitialCertification = s.IsInitialCertification,
-                    IsRenewalCertification = s.IsRenewalCertification,
-                    IsAnotherCertification = s.IsAnotherCertification,
-                    LicenseNo = s.LicenseNo,
-                    Books = s.BookModels
-                   .Select(s => new BookingDto
-                   {
-                       Id = s.Id.ToString(),
-                       IsBooked = s.IsBooked,
-                       StartedDate = s.StartDate.ToString("dd/MMM/yy"),
-                       EndedDate = s.EndDate.ToString("dd/MMM/yy")
-                   }).ToList(),
+                    Id = s.Id.ToString(),
+                    Standard = s.StandardModel != null ? s.StandardModel.StandardCode + "-" + s.StandardModel!.Displayname : "",
+                    RefCode = s.RefCode != null ? s.RefCode : "",
+                    CompanyName = s.ClientModel != null ? s.ClientModel.ClientInfomationModels.Select(s => s.CompanyName).First() : "",
                     CertificationBody = s.CertificationBody != null ? s.CertificationBody : "",
                     CertificationExpirationDate = s.CertificationExpirationDate.ToString("dd/MMM/yy"),
                     Status = s.Status != null ? s.Status.ToString() : "",
-                    IssueCertificated = s.IssueCertificated,
                     IssueCertificatedDate = s.IssueCertificatedDate.ToString() != null ? s.IssueCertificatedDate.ToString("dd/MMM/yy") : "",
-                }, x => x.StandardModel!, x => x.ClientModel!, x => x.BookModels!);
+                    GetFactoryResult = s.FactoryModels.Select(s => new GetFactoryResult
+                    {
+                        Id = s.Id.ToString(),
+                        UnitName = s.UnitName
+                    }).ToList()
+                }, x => x.StandardModel!, x => x.ClientModel!, x => x.ClientModel!.ClientInfomationModels, x => x.FactoryModels);
             if (projectResult != null)
             {
 
@@ -60,6 +54,69 @@ namespace Controllers.Management
         }
         //TODO: Create Project
         //TODO: Get Detail
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDetail(Guid id)
+        {
+            Expression<Func<ProjectModel, bool>> filter = p => p.Id == id;
+            var result = await _repositoyProject.GetDetailFilteredAsync(s => new GetDetailProjectResult
+            {
+                CertificationBody = s.CertificationBody != null ? s.CertificationBody : "",
+                Status = s.Status != null ? s.Status : "",
+                IssueCertificatedDate = s.IssueCertificatedDate,
+                CertificationExpirationDate = s.CertificationExpirationDate,
+                GetClientResult = new GetClientDetailResult
+                {
+                    Id = s.Id.ToString(),
+                    Email = s.ClientModel != null ? s.ClientModel.Email : "",
+                    IsThirdParty = s.ClientModel!.IsThirdParty,
+                    GetClienInfortDetailResult = s.ClientModel!.ClientInfomationModels.Select(clientInfo => new GetClienInfortDetailResult
+                    {
+                        Id = clientInfo.Id.ToString(),
+                        CompanyName = clientInfo.CompanyName,
+                        Address = clientInfo.Address,
+                        City = clientInfo.City,
+                        ContactPerson = clientInfo.ContactPerson,
+                        Country = clientInfo.Country,
+                        Title = clientInfo.Title,
+                        Phone = clientInfo.Phone
+                    }).ToList()
+                },
+                GetStandardResult = new GetStandardDetailResult
+                {
+                    Id = s.Id.ToString(),
+                    Displayname = s.StandardModel.Displayname ?? null,
+                    StandardCode = s.StandardModel.StandardCode ?? null
+                },
+                GetFactoryDetailResult = s.FactoryModels.Select(factory => new GetFactoryDetailResult
+                {
+                    Id = factory.Id.ToString(),
+                    UnitName = factory.UnitName ?? null,
+                    Address = factory.Address ?? null,
+                    Ward = factory.Ward ?? null,
+                    District = factory.District ?? null,
+                    City = factory.City ?? null,
+                    Country = factory.Country ?? null,
+                    ZipCode = factory.ZipCode ?? null,
+                    Occupancies = factory.Occupancies ?? null,
+                    ActivitiesList = factory.ActivitiesList ?? null,
+                    IsCertificatePreviously = factory.IsCertificatePreviously,
+                    GetBookDetailResult = factory.BookModels.Any() ? new GetBookDetailResult
+                    {
+                        Id = factory.BookModels.First().Id.ToString(),
+                        Title = factory.BookModels.First().Title,
+                        SubTitle = factory.BookModels.First().SubTitle,
+                        Occupancy = factory.BookModels.First().Occupancy,
+                        CompletedNotes = factory.BookModels.First().CompletedNotes,
+                        Description = factory.BookModels.First().Description,
+                        CompletedDate = factory.BookModels.First().CompletedDate,
+                        StartDate = factory.BookModels.First().StartDate,
+                        EndDate = factory.BookModels.First().EndDate
+                    } : null
+                }).ToList()
+
+            }, filter, c=>c.ClientModel, c=>c.ClientModel.ClientInfomationModels, c=>c.FactoryModels);
+            return Ok(result);
+        }
         //TODO: Update Project
     }
 }

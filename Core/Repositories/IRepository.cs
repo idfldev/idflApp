@@ -3,7 +3,7 @@ using idflApp.Core.Models.Interfaces;
 
 namespace idflApp.Services.Repositories
 {
-    public class IParams<T>
+    public class IParams<TResult>
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
@@ -13,7 +13,7 @@ namespace idflApp.Services.Repositories
         public int TotalRecords { get; set; }
         public int NextPage { get; set; }
         public int PreviousPage { get; set; }
-        public T Data { get; set; }
+        public TResult Data { get; set; }
     }
     public interface IRepository<TEntity, TResult> where TEntity : BaseInterface
     {

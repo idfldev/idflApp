@@ -24,7 +24,7 @@ namespace idflApp.Data
             modelBuilder.Entity<UserModel>(entity =>
             {
                 entity.ToTable("dbuser");
-                entity.HasOne(o=>o.DepartmentModel).WithMany(w=>w.UserModels).HasForeignKey(o=>o.DepartmentId); 
+                entity.HasOne(o => o.DepartmentModel).WithMany(w => w.UserModels).HasForeignKey(o => o.DepartmentId);
 
             });
         }
@@ -48,18 +48,22 @@ namespace idflApp.Data
             {
                 entity.ToTable("dbproject");
                 entity.HasIndex(i => i.RefCode).IsUnique();
-                //project-client
+
+                // Project-Client Relationship
                 entity.HasOne(o => o.ClientModel)
-                .WithMany(s => s.ProjectModels)
-                .HasForeignKey(o => o.ClientId);
-                //project-standard
+                    .WithMany(s => s.ProjectModels)
+                    .HasForeignKey(o => o.ClientId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // Project-Standard Relationship
                 entity.HasOne(o => o.StandardModel)
-                .WithMany(s => s.ProjectModels)
-                .HasForeignKey(o => o.StandardId);
-                //project-user
+                    .WithMany(s => s.ProjectModels)
+                    .HasForeignKey(o => o.StandardId);
+
+                // Project-User Relationship
                 entity.HasOne(o => o.UserModel)
-                .WithMany(s => s.ProjectModels)
-                .HasForeignKey(o => o.UserId);
+                    .WithMany(s => s.ProjectModels)
+                    .HasForeignKey(o => o.UserId);
             });
         }
         //private static void GenerateProjectGeneralRelation(ModelBuilder modelBuilder)
@@ -171,7 +175,7 @@ namespace idflApp.Data
             modelBuilder.Entity<UserInformationModel>(entity =>
             {
                 entity.ToTable("dbuserinformation");
-                entity.HasOne(o => o.UserModel).WithMany(o => o.UserInformationModels);
+                entity.HasOne(o => o.UserModel).WithMany(o => o.UserInformationModels).HasForeignKey(k => k.UserId);
             });
         }
 
@@ -180,7 +184,7 @@ namespace idflApp.Data
             modelBuilder.Entity<ClientInfomationModel>(entity =>
             {
                 entity.ToTable("dbclientinformation");
-                entity.HasOne(o => o.ClientModel).WithMany(o => o.ClientInfomationModels);
+                entity.HasOne(o => o.ClientModel).WithMany(o => o.ClientInfomationModels).HasForeignKey(k => k.ClientId);
             });
         }
         public static void GenerateDepartmentRelation(ModelBuilder modelBuilder)

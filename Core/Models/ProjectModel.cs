@@ -12,11 +12,11 @@ namespace idflApp.Core.Models
         public string? Status { get; set; }
         //relationship
         public Guid ClientId { get; set; }
-        public required ClientModel ClientModel { get; set; }
+        public ClientModel ClientModel { get; set; }
         public Guid? UserId { get; set; }
         public UserModel? UserModel { get; set; }
         public Guid? StandardId { get; set; }
-        public StandardModel? StandardModel { get; set; }
+        public StandardModel StandardModel { get; set; }
         // end relationship
         public DateTime IssueCertificatedDate { get; set; }
         public DateTime CertificationExpirationDate { get; set; }

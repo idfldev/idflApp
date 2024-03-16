@@ -22,11 +22,12 @@ namespace Controllers.Management
         private readonly IRepository<BookModel, object> _repositoryBook;
         private readonly IRepository<BookUserModel, object> _repositoryUserBook;
         private readonly IRepository<UserModel, object> _repositoryUser;
+        private readonly IRepository<UserInformationModel, object> _repositoryUserInfo;
         private readonly ApplicationDbContext _dbContext;
         public BookController(
             ILogger<BookController> logger, IRepository<ProjectModel, object> repositoryProject
             , IRepository<BookUserModel, object> repositoryUserBook, IRepository<BookModel, object> repositoryBook,
-            IRepository<UserModel, object> repositoryUser, ApplicationDbContext dbContext, BookService bookService)
+            IRepository<UserModel, object> repositoryUser, ApplicationDbContext dbContext, BookService bookService, IRepository<UserInformationModel, object> repositoryUserInfo)
         {
             _logger = logger;
             _repositoryProject = repositoryProject;
@@ -35,6 +36,7 @@ namespace Controllers.Management
             _repositoryUser = repositoryUser;
             _dbContext = dbContext;
             _bookService = bookService;
+            _repositoryUserInfo = repositoryUserInfo;
         }
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateBookRequestDto bookRequest)
@@ -56,22 +58,21 @@ namespace Controllers.Management
                                     Message = ResponseErrorConstant.ExistBookDate,
                                 });
                         }
-                        var res = await _repositoryBook.ExistsAsync(bookRequest.ProjectId, "ProjectId");
-                        if (res)
-                        {
-                            return BadRequest(new CreateBooKResponseDto
-                            {
-                                Result = false,
-                                Message = ResponseErrorConstant.ExistBookDate,
-                            });
-                        }
+                        //var res = await _repositoryBook.ExistsAsync(bookRequest.ProjectId, "ProjectId");
+                        //if (res)
+                        //{
+                        //    return BadRequest(new CreateBooKResponseDto
+                        //    {
+                        //        Result = false,
+                        //        Message = ResponseErrorConstant.ExistBookDate,
+                        //    });
+                        //}
                         var user = HttpContext.Items["User"] as UserModel;
                         bookRequest.UserId = user!.Id;
                         bookRequest.CreatedAt = DateTime.Now;
                         var book = new BookModel()
                         {
-                            UserId = bookRequest.UserId,
-                            ProjectId = bookRequest.ProjectId,
+                            FactoryId = bookRequest.FactoryId,
                             Title = bookRequest.Title,
                             SubTitle = bookRequest.SubTitle,
                             BgColor = bookRequest.BgColor,
@@ -115,14 +116,14 @@ namespace Controllers.Management
             var Users = await _repositoryUser.GetAllAsync(s => new Auditors
             {
                 Id = s.Id.ToString(),
-                Name = s.AccountName
+                Name = s.DisplayName
             });
             Expression<Func<ProjectModel, bool>> filter = p => p.Id == id;
             var projects = await _repositoryProject.GetDetailFilteredAsync(s => new GetBookFormDto
             {
                 Id = s.Id.ToString(),
-                Client = s.ClientModel.AccountName,
-                Standard = s.StandardModel.Name,
+                Client = s.ClientModel.DisplayName,
+                Standard = s.StandardModel.Displayname,
                 Status = s.Status,
             }, filter, p => p.StandardModel!, p => p.ClientModel!);
             if (projects == null && Users == null)
@@ -150,13 +151,13 @@ namespace Controllers.Management
             var result = _repositoryBook.GetDetailFilteredAsync(s=>  new UpdateBookRequestDto{
                 Id = id.ToString(),
                 UserId = user.Id.ToString(),
-                ProjectId = s.ProjectId.ToString(),
+                FactoryId = s.FactoryId.ToString(),
                 Title = s.Title,
                 UserBookRequest = s.BookUserModels.Select(m=> new UpdateUserBookRequestDto{
                     AuditorId = m.AuditorId.ToString(),
                     BookId = m.BookId.ToString()
                 }).ToList()
-            },filter, c=> c.ProjectModel);
+            },filter, c=> c.FactoryModel);
             return Ok();
         }
         //TODO: Time line
@@ -170,9 +171,9 @@ namespace Controllers.Management
                     Id = s.Id.ToString(),
                     Label = new Label
                     {
-                        Icon = s.Icon != null ? s.Icon : "",
-                        Title = s.Title != null ? s.Title : "",
-                        Subtitle = s.Title != null ? s.Title : "",
+                        Icon = s.UserInformationModels.Select(s=>s.Icon).First() ?? "",
+                        Title = s.DisplayName ?? "",
+                        Subtitle = s.UserInformationModels.Select(s=>s.Title).First() ?? ""
                     },
                     Data = s.BookUserModels!.Select(book => new BookingData
                     {
@@ -185,7 +186,7 @@ namespace Controllers.Management
                         EndDate = book.BookModel.EndDate,
                         Occupancy = book.BookModel.Occupancy ?? 0
                     }).ToList(),
-                }, x => x.BookUserModels!);
+                }, x => x.BookUserModels!, c=>c.UserInformationModels!);
                 return Ok(users);
             }
             catch (Exception ex)

@@ -14,7 +14,7 @@ namespace idflApp.Core.Dtos
         [Required]
         public Guid UserId { get; set; }
         [Required]
-        public Guid ProjectId { get; set; }
+        public Guid FactoryId { get; set; }
         [Required]
         public string Title { get; set; }
         public List<UserBookRequestDto>? UserBookRequest { get; set; }

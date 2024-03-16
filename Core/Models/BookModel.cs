@@ -13,7 +13,6 @@ namespace idflApp.Core.Models
         // public Guid? AuditBy { get; set; }
         public List<BookUserModel>? BookUserModels { get; set; }
         public List<BookCompleteModel>? BookCompleteModels { get; set; }
-        public Guid? CompletedBy { get; set; }
         public bool IsBooked { get; set; }
         public string? CompletedNotes { get; set; }
         public string? Description { get; set; }

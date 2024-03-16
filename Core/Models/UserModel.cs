@@ -8,6 +8,7 @@ namespace idflApp.Core.Models
     {
         public string? DisplayName { get; set; }
         public string UserCode { get; set; }
+        public string? Email { get; set; }
         public Role UserRole { get; set; }
         [JsonIgnore]
         public required string Password { get; set; }

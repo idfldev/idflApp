@@ -9,6 +9,8 @@ namespace idflApp.Core.Models
     {
         public string? DisplayName { get; set; }
         public int ClientCode { get; set; }
+        public string? Email { get; set; }
+
         public ClientRole ClientRole { get; set; }
         public bool IsThirdParty { get; set; }
         [JsonIgnore]

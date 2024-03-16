@@ -5,7 +5,7 @@ namespace idflApp.Core.Models
     public class FactoryModel : BaseInterface
     {
         public Guid ProjectId { get; set; }
-        public required ProjectModel ProjectModel { get; set; }
+        public ProjectModel ProjectModel { get; set; }
         public string? UnitName { get; set; }
         public string? Address { get; set; }
         public string? Ward { get; set; }

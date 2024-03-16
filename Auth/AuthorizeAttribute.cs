@@ -27,7 +27,7 @@ namespace idflApp.auth
                 // User is not logged in
                 context.Result = new JsonResult(new { message = "Unauthorized - User not logged in" }) { StatusCode = StatusCodes.Status401Unauthorized };
             }
-            else if (_roles.Any() && !_roles.Contains(user.Roles))
+            else if (_roles.Any() && !_roles.Contains(user.UserRole))
             {
                 // User is logged in but doesn't have the required role
                 context.Result = new JsonResult(new { message = "Unauthorized - Insufficient Role Access" }) { StatusCode = StatusCodes.Status401Unauthorized };
