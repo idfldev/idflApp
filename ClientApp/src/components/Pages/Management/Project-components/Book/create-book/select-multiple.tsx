@@ -1,44 +1,46 @@
 import { useEffect, useState } from "react";
 import { MultiSelect } from "react-multi-select-component";
-const options = [
-  { label: "Grapes 🍇", value: "grapes" },
-  { label: "Mango 🥭", value: "mango" },
-  { label: "Strawberry 🍓", value: "strawberry", disabled: true },
-];
+
 interface AuditorInferface {
   label: string,
-  value: any,
+  value: string,
   key?: string;
   disabled?: boolean;
 }
-export const SelectMultiple = (props: any) => {
-  const [selected, setSelected] = useState([]);
-  const [data, setData] = useState<AuditorInferface[]>([])
+interface SelectMultipleProps {
+  auditors: any[]; // Define the type of auditors prop
+  onDataSelect: (selectedData: AuditorInferface[]) => void; // Callback function to return selected data
+}
+const SelectMultiple = ({ auditors, onDataSelect }: SelectMultipleProps) => {
+  const [selected, setSelected] = useState<AuditorInferface[]>([]);
+  const [data, setData] = useState<AuditorInferface[]>([]);
+
   const convert = () => {
-    const convertValue = props.auditors.map((items: any) => ({
-      label: items.name,
-      value: items.id
-    }))
-    return convertValue
-  }
+    return auditors.map((item: any) => ({
+      label: item.name,
+      value: item.id
+    }));
+  };
 
   useEffect(() => {
     const convertedData = convert();
-    setData(convertedData); // Cập nhật state data với dữ liệu chuyển đổi
-  }, [props.auditors]);
-  console.log(data)
+    setData(convertedData);
+  }, [auditors]);
+
+  useEffect(() => {
+    onDataSelect(selected); // Invoke the callback function with selected data
+  }, [selected, onDataSelect]);
+
   return (
-    <>
-      <div className="col-span-12">
-        <h1>Select Fruits</h1>
-        <pre>{JSON.stringify(selected)}</pre>
-        <MultiSelect
-          options={data}
-          value={selected}
-          onChange={setSelected}
-          labelledBy="Select"
-        />
-      </div>
-    </>
+    <div className="col-span-12">
+      <MultiSelect
+        options={data}
+        value={selected}
+        onChange={setSelected}
+        labelledBy="Select"
+      />
+    </div>
   );
 };
+
+export default SelectMultiple;

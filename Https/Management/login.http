@@ -1,0 +1,8 @@
+POST localhost:7195/api/authenticate
+Content-Type: application/json
+Content-Length: 61
+
+{
+    "Email":"alice.smith@example.com",
+    "Password": "1234"
+}

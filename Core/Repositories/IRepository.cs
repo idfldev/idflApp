@@ -22,6 +22,7 @@ namespace idflApp.Services.Repositories
         Task<IParams<IEnumerable<TResult>>> PaginateAllAsync(int pageNumber, int pageSize, Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] includes);
         Task<IEnumerable<TResult>> GetAllAsync(Expression<Func<TEntity, TResult>> selector, params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity> UpdateAsync(TEntity entity);
+        Task UpdateRangeAsync(List<TEntity> entities);
         Task<TEntity> DeleteAsync(Guid id);
         Task<bool> ExistsAsync(Guid id, string value);
         Task<IEnumerable<TEntity>> GetAllByPropertyAsync(string propertyName, IEnumerable<Guid> ids, params Expression<Func<TEntity, object>>[] includes);

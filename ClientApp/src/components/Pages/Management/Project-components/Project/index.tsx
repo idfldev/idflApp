@@ -3,18 +3,39 @@ import axios from "axios";
 import { Menu, Transition } from "@headlessui/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { NavItem, NavLink } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useBeforeUnload } from "react-router-dom";
 import "./index.css";
+import { FetchToken } from "hooks/fetch-token";
+interface PaginationInterface {
+  pageNumber: number,
+  pageSize: number,
+  firstPage: number,
+  lastPage: number,
+  totalPages: number,
+  TotalRecords: number,
+  nextPage: number,
+  previousPage: number
+};
 export const ProjectApp: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [project, setProject] = useState([]);
+  const [pagination, setPagination] = useState<PaginationInterface | null>(null);
 
   const getProjectData = async () => {
+    var data = {
+      PageSize: 10,
+      pageNumber: 1
+    }
     try {
-      const response = await axios.get("api/management/project");
-      setProject(response.data.project);
+      const response = await axios.get("api/management/project", {
+        params: data, // Use 'params' to pass data in GET requests
+        headers: {
+          Authorization: FetchToken
+        }
+      });
+      console.log(response.data.data);
+      setProject(response.data.data);
       setLoading(false);
-      console.log(response.data);
     } catch (error) {
       setLoading(false);
     }
@@ -37,7 +58,10 @@ export const ProjectApp: React.FC = () => {
                 No
               </th>
               <th scope="col" className="pe-28 h-24">
-                Client
+                <div className="w-28 pe-3 ">Company Name</div>
+              </th>
+              <th scope="col" className="pe-28 h-24">
+                <div className="w-28 pe-3 ">Factories</div>
               </th>
               <th scope="col" className="h-24">
                 <div className="w-60">Standard</div>
@@ -48,32 +72,13 @@ export const ProjectApp: React.FC = () => {
                 </div>
               </th>
               <th scope="col" className="h-24">
-                <div className="w-28">license No</div>
-              </th>
-              <th scope="col" className="h-24">
                 <div className="w-28 pe-3 ">Issued Certificate date</div>
               </th>
-
               <th scope="col" className="pe-12 py-3">
                 Expired Certificated
               </th>
               <th scope="col" className="pe-20 py-3">
                 status
-              </th>
-              <th scope="col" className="h-24">
-                <div className="w-52">Book Date</div>
-              </th>
-              <th scope="col" className="pe-10 py-3">
-                Issued Certification
-              </th>
-              <th scope="col" className="pe-10 py-3">
-                Another Certification
-              </th>
-              <th scope="col" className="pe-10 py-3">
-                Initial Certification
-              </th>
-              <th scope="col" className="pe-10 py-3">
-                Renewal Certification
               </th>
               <th scope="col" className="pe-10 py-3">
                 Actions
@@ -88,64 +93,29 @@ export const ProjectApp: React.FC = () => {
               >
                 <td className="px-10 py-3 text-center">{index}</td>
                 <td className="py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {items.client}
+                  {items.companyName}
+                </td>
+                <td>
+                  {items.getFactoryResult.map((factory: any, idx: any) => (
+                    <p className="text-cyan-600" key={idx}>{factory.unitName}</p>
+                  ))}
                 </td>
                 <td className="py-3">{items.standard}</td>
-                <td className="py-3">{items.idflCode}</td>
-                <td className="py-3">{items.licenseNo}</td>
+                <td className="py-3">{items.refCode}</td>
                 <td className="py-3">{items.issueCertificatedDate}</td>
                 <td className="py-3">{items.certificationExpirationDate}</td>
                 <td
-                  className={`py-3 ${
-                    items.status === "Pending"
-                      ? "text-red-500 font-bold"
-                      : "" || items.status === "Verified"
+                  className={`py-3 ${items.status === "Pending"
+                    ? "text-red-500 font-bold"
+                    : "" || items.status === "Verified"
                       ? "text-green-500 font-bold"
                       : ""
-                  }`}
+                    }`}
                 >
                   {items.status}
                 </td>
-                <td className="py-3 text-gray-600 font-bold">
-                  {items.books.map((items: any, index: any) => (
-                    <h4>{items.startedDate} ~ {items.endedDate }</h4>
-                  ))}
-                </td>
-                <td className="py-3">
-                  <input
-                    readOnly
-                    type="checkbox"
-                    checked={items.issueCertificated === true ? true : false}
-                  />
-                </td>
-                <td className="py-3">
-                  <input
-                    readOnly
-                    type="checkbox"
-                    checked={
-                      items.isAnotherCertification === true ? true : false
-                    }
-                  />
-                </td>
 
-                <td className="py-3">
-                  <input
-                    readOnly
-                    type="checkbox"
-                    checked={
-                      items.isInitialCertification === true ? true : false
-                    }
-                  />
-                </td>
-                <td className="py-3">
-                  <input
-                    readOnly
-                    type="checkbox"
-                    checked={
-                      items.isRenewalCertification === true ? true : false
-                    }
-                  />
-                </td>
+
                 <td>
                   <Menu as="div" className="relative inline-block text-left">
                     <div>

@@ -1,0 +1,50 @@
+@token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmYjhjN2Y5LWU5NmMtNDEyYi1hYzI1LTkyOTgwZTg5Mjc0YyIsIm5iZiI6MTcxMDc0ODI2NywiZXhwIjoxNzEwNzUwMDY3LCJpYXQiOjE3MTA3NDgyNjd9.BW0ZSy0IbAhGlDlV3QtxbZXNlqYRiqMTujJ8gKbAjMA
+@localhost = localhost:7195/api
+
+### POST book management
+POST {{localhost}}/management/book
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "FactoryId": "64afb8f6-55ae-46f0-a72d-a3a4719bc174",
+    "Title": "Đi kiểm tra nhà máy",
+    "SubTitle": "Nhà máy SCCC",
+    "BgColor": "rgb(254,185,33)",
+    "Occupancy": 2,
+    "Description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+    "StartDate": "2024-03-28T15:31:24.272Z",
+    "EndDate": "2024-03-29T15:31:24.272Z",
+    "UserBookRequest": [
+        {
+            "AuditorId": "3fb8c7f9-e96c-412b-ac25-92980e89274c"
+        },
+        {
+            "AuditorId": "684c02da-f46d-45c0-9bf5-6bb716102a2e"
+        }
+    ]
+}
+### Put
+PUT  {{localhost}}/management/book
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "Id": "08dc46ee-99f1-4cf5-8b15-0df0c93bbf6e",
+    "Title": "Nha tao mo",
+    "SubTitle": "Nhà máy SCCC ddd ddo",
+    "BgColor": "rgb(254,185,33)",
+    "Occupancy": 2,
+    "Description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+    "StartDate": "2024-03-28T15:31:24.272Z",
+    "EndDate": "2024-03-29T15:31:24.272Z",
+}
+
+### Get Detail history
+GET {{localhost}}/management/book
+Authorization: {{token}}
+
+### Get form
+GET {{localhost}}/management/book/a3f22a8c-0eb0-4e15-97e5-73b8b45d451a
+Authorization: {{token}}
+

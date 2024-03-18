@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Controllers.Management
 {
     [ApiController]
+    [Authorize]
     [Route("api/management/project")]
     public class ProjectController : ControllerBase
     {
