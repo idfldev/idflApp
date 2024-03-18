@@ -1,0 +1,44 @@
+.canvas-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  canvas {
+    border: 1px solid #ccc; /* Add border to the canvas */
+    background-color: #f9f9f9; /* Set background color */
+  }
+  
+  .scheduler {
+    margin-top: 20px; /* Add margin to the top */
+  }
+  
+  .scheduler select {
+    padding: 8px 10px; /* Add padding to the select element */
+    border-radius: 5px; /* Add border radius */
+    border: 1px solid #ccc; /* Add border */
+  }
+  
+  .scheduler canvas {
+    margin-top: 20px; /* Add margin to the canvas */
+  }
+  
+  .scheduler .w-24 {
+    margin-right: 10px; /* Add margin to the select container */
+  }
+  
+  /* Add styles for the table */
+  table {
+    border-collapse: collapse !important;
+    width: 100%;
+  }
+  
+  th, td {
+    border: 1px solid #ddd !important;
+    padding: 8px !important;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f2f2f2 !important; /* Add background color to table headers */
+  }
+  
