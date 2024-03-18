@@ -9,8 +9,10 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import { BOOK_URL } from "apis/api-path";
 import { title } from "process";
-import { SelectMultiple } from "./select-multiple";
+
 import { FetchToken } from "hooks/fetch-token";
+import SelectFactory from "./select-factory";
+import SelectMultiple from "./select-multiple";
 
 interface AuditorInferface {
   id: any;
@@ -25,8 +27,11 @@ export const BookCreateForm: React.FC = () => {
   const [standard, setStandard] = useState("");
   const [status, setStatus] = useState("");
   const [auditors, setAuditors] = useState<AuditorInferface[]>([] || null);
+  const [factories, setFactories] = useState([]);
+  const [dataUser, setDataUser] = useState([])
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
+  const [factory, setFactory] = useState("");
   const [startDate, setStartDate] = useState({
     startDate: null,
     endDate: null, // Convert the result to a Date object
@@ -47,10 +52,13 @@ export const BookCreateForm: React.FC = () => {
         },
       });
       // Handle the response data here
-      setClient(response.data.client);
-      setStandard(response.data.standard);
-      setStatus(response.data.status);
-      setAuditors(response.data.auditors);
+      setStandard(response.data.projects.standard);
+      setStatus(response.data.projects.status);
+      setClient(response.data.projects.client)
+      setTitle(response.data.projects.client)
+      setAuditors(response.data.users);
+      setFactories(response.data.projects.factories)
+      console.log("data: ", response.data.users)
     } catch (error) {
       // Handle any errors that occur during the request
       console.error("Error fetching data:", error);
@@ -61,13 +69,13 @@ export const BookCreateForm: React.FC = () => {
     query === ""
       ? auditors
       : auditors.filter((person: any) =>
-          person.name
-            .toLowerCase()
-            .replace(/\s+/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""))
-        );
+        person.name
+          .toLowerCase()
+          .replace(/\s+/g, "")
+          .includes(query.toLowerCase().replace(/\s+/g, ""))
+      );
 
-  const handlePurposeChange = (event: any) => {
+  const handleTitleChange = (event: any) => {
     setTitle(event.target.value);
   };
   const handleDescriptionChange = (event: any) => {
@@ -79,8 +87,11 @@ export const BookCreateForm: React.FC = () => {
   const handleStartDateChange = (event: any) => {
     setStartDate(event);
   };
+
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+
     const requiredFields = [];
 
     if (!title) {
@@ -100,8 +111,10 @@ export const BookCreateForm: React.FC = () => {
       setErrorAlert("modal-error-active");
       return;
     }
+
+    console.log("function: ", dataUser)
     const formData = {
-      projectId: id,
+      FactoryId: factory,
       AuditBy: selected?.id,
       Title: title,
       SubTitle: title,
@@ -109,6 +122,7 @@ export const BookCreateForm: React.FC = () => {
       EndDate: endDate.endDate,
       Description: description,
       BgColor: color,
+      UserBookRequest: dataUser.map((value: any) => ({ AuditorId: value.value }))
     };
 
     try {
@@ -128,9 +142,15 @@ export const BookCreateForm: React.FC = () => {
   const handlePickColor = (value: any) => {
     setColor(value);
   };
+  const handleFactorySelection = (selectedFactory: any) => {
+    setFactory(selectedFactory?.id)
+  }
+  const handleUserSelection = (selectedUser: any) => {
+    setDataUser(selectedUser);
+  }
+
   useEffect(() => {
     getDataFromBook();
-
     const timer = setTimeout(() => {
       setErrorAlert(""); // Hide the error alert after 3 seconds
     }, 3000);
@@ -145,7 +165,6 @@ export const BookCreateForm: React.FC = () => {
               BOOKING
             </h1>
             <h5>{standard}</h5>
-            <h6>{client}</h6>
             <h6>{status}</h6>
             <div className="mt-10 grid grid-cols-12 gap-x-6 gap-y-8">
               <div className="col-span-12">
@@ -157,8 +176,9 @@ export const BookCreateForm: React.FC = () => {
                 </label>
                 <div className="mt-2">
                   <input
-                    value={title}
-                    onChange={handlePurposeChange}
+                    readOnly
+                    value={client}
+                    onChange={handleTitleChange}
                     type="text"
                     name="name"
                     id="name"
@@ -166,6 +186,9 @@ export const BookCreateForm: React.FC = () => {
                     className="border p-2 w-full"
                   />
                 </div>
+              </div>
+              <div className="col-span-12">
+                <SelectFactory factories={factories} onFactorySelect={handleFactorySelection} />
               </div>
               <div className="col-span-12">
                 <label
@@ -176,78 +199,7 @@ export const BookCreateForm: React.FC = () => {
                 </label>
 
                 <div className="col-span-12">
-                  <Combobox value={selected || ""} onChange={setSelected}>
-                    <div className="relative mt-1">
-                      <div className="relative w-full cursor-default overflow-hidden border  bg-white text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-                        <Combobox.Input
-                          className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                          displayValue={(person: any) => person.name}
-                          onChange={(event) => setQuery(event.target.value)}
-                        />
-                        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                          <ChevronUpDownIcon
-                            className="h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
-                        </Combobox.Button>
-                      </div>
-                      <Transition
-                        as={Fragment}
-                        leave="transition ease-in duration-100"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                        afterLeave={() => setQuery("")}
-                      >
-                        <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                          {filteredPeople.length === 0 && query !== "" ? (
-                            <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
-                              Nothing found.
-                            </div>
-                          ) : (
-                            filteredPeople.map((person: any) => (
-                              <Combobox.Option
-                                key={person.id}
-                                className={({ active }) =>
-                                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                    active
-                                      ? "bg-teal-600 text-white"
-                                      : "text-gray-900"
-                                  }`
-                                }
-                                value={person}
-                              >
-                                {({ selected, active }) => (
-                                  <>
-                                    <span
-                                      className={`block truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
-                                    >
-                                      {person.name}
-                                    </span>
-                                    {selected ? (
-                                      <span
-                                        className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                          active
-                                            ? "text-white"
-                                            : "text-teal-600"
-                                        }`}
-                                      >
-                                        <CheckIcon
-                                          className="h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      </span>
-                                    ) : null}
-                                  </>
-                                )}
-                              </Combobox.Option>
-                            ))
-                          )}
-                        </Combobox.Options>
-                      </Transition>
-                    </div>
-                  </Combobox>
+                  <SelectMultiple auditors={auditors} onDataSelect={handleUserSelection} />
                 </div>
               </div>
 
@@ -292,7 +244,7 @@ export const BookCreateForm: React.FC = () => {
                   type="color"
                 />
               </div>
-              <SelectMultiple auditors={auditors}/>
+
 
               <div className="col-span-12">
                 <label

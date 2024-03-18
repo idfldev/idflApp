@@ -1,0 +1,9 @@
+@token =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjNmYjhjN2Y5LWU5NmMtNDEyYi1hYzI1LTkyOTgwZTg5Mjc0YyIsIm5iZiI6MTcxMDczOTkyMSwiZXhwIjoxNzEwNzQxNzIxLCJpYXQiOjE3MTA3Mzk5MjF9.wnQsMmb7PPow-mfv9xWz73hZpUHGW4GvaGynHOON46M
+@localhost = localhost:7195/api
+
+GET {{localhost}}/management/project?PageSize=2&PageNumber=1
+Authorization: {{token}}
+
+###Get detail
+GET {{localhost}}/management/project/a3f22a8c-0eb0-4e15-97e5-73b8b45d451a
+Authorization: {{token}}

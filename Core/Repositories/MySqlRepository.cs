@@ -128,10 +128,34 @@ namespace idflApp.Services.Repositories
             if (existingEntity == null)
                 throw new Exception($"Entity with ID {entity.Id} not found.");
 
-            _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+           _entities.Entry(existingEntity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return existingEntity;
+        }
+
+        public async Task UpdateRangeAsync(List<TEntity> entities)
+        {
+            if (entities == null)
+                throw new ArgumentNullException(nameof(entities));
+
+            // Load existing entities from the database
+            var existingEntities = await _entities.Where(e => entities.Select(x => x.Id).Contains(e.Id)).ToListAsync();
+
+            // Update each entity individually
+            foreach (var entity in entities)
+            {
+                // Find the corresponding existing entity
+                var existingEntity = existingEntities.FirstOrDefault(e => e.Id == entity.Id);
+                if (existingEntity != null)
+                {
+                    // Update the properties of the existing entity
+                    _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+                }
+            }
+        
+            // Save changes to the database
+            await _context.SaveChangesAsync();
         }
 
     }
