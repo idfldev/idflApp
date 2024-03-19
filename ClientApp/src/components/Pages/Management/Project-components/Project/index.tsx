@@ -41,6 +41,13 @@ export const ProjectApp: React.FC = () => {
     }
   };
   useEffect(() => {
+    const successMessage = localStorage.getItem('successMessage');
+    if (successMessage) {
+      // Display the success message
+      alert(successMessage);
+      // Clear the success message from local storage
+      localStorage.removeItem('successMessage');
+    }
     getProjectData();
   }, []);
   function classNames(...classes: any) {
