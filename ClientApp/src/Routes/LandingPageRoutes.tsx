@@ -1,12 +1,8 @@
-const LandingPageRoutes = [
-  {
-    path: "/",
-    element: "",
-  },
-  {
-    path: "/about",
-    element: "",
-  },
-]
+import { ProfileLayoutApp } from "components/Pages/Common/Profiles";
 
-export default {LandingPageRoutes};
+export const LandingPageRoutes = [
+  {
+    path: "/profile",
+    element: <ProfileLayoutApp />,
+  },
+];

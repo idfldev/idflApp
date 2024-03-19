@@ -1,6 +1,6 @@
 import React from "react";
 import "./custom.css";
-import {  Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { LoginApp } from "components/Pages/Management/Login/login";
 import { ManagementApp } from "components/Pages/Management";
 import { AdminPageApp } from "components/Pages/Admin";
@@ -12,7 +12,7 @@ export const App: React.FC = () => {
       <Routes>
         <Route path="/management/*" element={<ManagementApp />} />
         <Route path="/admin/*" element={<AdminPageApp />} />
-        <Route path="/" element={<LandingPageApp />} />
+        <Route path="/*" element={<LandingPageApp />} />
         <Route path="/login" element={<LoginApp />} />
       </Routes>
     </>

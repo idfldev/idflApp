@@ -1,0 +1,12 @@
+footer {
+  background: rgba(9, 125, 221, 0.703);
+  color: white;
+  height: 50px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+footer span {
+  line-height: 50px;
+}
